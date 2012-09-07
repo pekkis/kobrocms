@@ -1,0 +1,12 @@
+<li>
+<h2>Latest News</h2>
+<ul>
+<?php foreach($this->news as $item): ?>
+<li><a href="/?page=<?php echo $this->page_id; ?>&amp;action=view&amp;id=<?php echo $item->id; ?>"><?php echo $item->title; ?></a></li>
+<?php endforeach; ?>
+</ul>
+</li>
+
+<p class="entry">
+<a href="/?page=<?php echo $this->page_id; ?>">More news &raquo;</a>
+</p>

@@ -1,0 +1,32 @@
+<div class="post">
+<div class="entry">
+
+<h2>Contact Us</h2>
+
+<p>The Dr. Kobros Foundation would very much like to hear from you. Just fill this form and we'll call you back right away!</p>
+
+<?php if($this->error): ?>
+<p class="error">
+You has check da bomb, there be error!
+</p>
+<?php endif; ?>
+
+<form action="/?page=<?php echo $this->page->id; ?>&amp;action=send" method="post">
+
+<input type="hidden" name="to" value="<?php echo $this->contact->mail_to; ?>" />
+<input type="hidden" name="subject" value="<?php echo $this->contact->mail_subject; ?>" />
+<input type="hidden" name="forward" value="<?php echo $this->forward; ?>" />
+
+<label for="from">Email</label>
+<input type="text" id="from" name="from">
+
+
+<label for="message">Message</label>
+<textarea id="message" name="message"></textarea>
+
+<button type="submit">Send</button>
+
+</form>
+
+</div>
+</div>

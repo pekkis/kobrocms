@@ -1,0 +1,10 @@
+<?php foreach($this->news as $item): ?>
+<div class="post">
+		<h2 class="title"><a href="/?page=<?php echo $this->page_id; ?>&amp;action=view&amp;id=<?php echo $item->id; ?>"><?php echo $item->title; ?></a></h2>
+				<p class="byline"><small>Posted on <?php echo $item->created; ?> by admin</small></p>
+				<div class="entry">
+					<?php echo $item->content; ?>
+					<p class="links"><a href="/?page=<?php echo $this->page_id; ?>&amp;action=view&amp;id=<?php echo $item->id; ?>" class="more">&laquo;&laquo;&nbsp;&nbsp;Read More&nbsp;&nbsp;&raquo;&raquo;</a></p>
+				</div>
+			</div>
+<?php endforeach; ?>

@@ -1,0 +1,4 @@
+[07-Sep-2012 11:18:55 UTC] PHP Strict standards:  Non-static method User::getInstance() should not be called statically, assuming $this from incompatible context in /wwwroot/kobrocms/public/inc/KobroCms.php on line 120
+[07-Sep-2012 11:18:55 UTC] PHP Stack trace:
+[07-Sep-2012 11:18:55 UTC] PHP   1. {main}() /wwwroot/kobrocms/public/index.php:0
+[07-Sep-2012 11:18:55 UTC] PHP   2. KobroCms->run() /wwwroot/kobrocms/public/index.php:32

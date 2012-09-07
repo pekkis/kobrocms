@@ -1,0 +1,16 @@
+<li>
+<h2>Poll</h2>
+
+<p><?php echo $this->question->question; ?></p>
+
+<ul>
+<?php foreach($this->answers as $answer): ?>
+<li>
+<a href="/?page=44&action=vote&question_id=<?php echo $this->question->id; ?>&answer_id=<?php echo $answer->id; ?>&forward=<?php echo $this->forward; ?>"><?php echo $answer->answer; ?></a> (<?php echo $answer->votes; ?>)
+</li>
+<?php endforeach; ?>
+</ul>
+
+
+</li>
+

@@ -1,0 +1,7 @@
+Hello, <strong><?php echo $this->user->login; ?>.</strong>
+<br />
+<?php if($this->user->role == 'anonymous'): ?>
+<a href="?page=<?php echo $this->target; ?>">Login</a>
+<?php else: ?>
+<a href="?page=<?php echo $this->target; ?>&amp;action=logout">Logout</a>
+<?php endif; ?>

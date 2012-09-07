@@ -1,0 +1,11 @@
+<div class="post">
+<div class="entry">
+<?php echo $this->html; ?>
+
+<?php if($this->user->role == 'admin'): ?>
+<p class="forAdmin">
+<a href="javascript:popupper('/?page=<?php echo $this->kobros->page->id; ?>&amp;action=edit&amp;block_id=<?php echo $this->block_id; ?>&amp;tpl=admin', 'html_edit');" class="html_edit" id="block_<?php echo $this->kobros->page->id; ?>_<?php echo $this->block_id; ?>">Edit</a>
+</p>
+<?php endif; ?>
+</div>
+</div>

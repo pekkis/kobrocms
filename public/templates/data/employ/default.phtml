@@ -1,0 +1,35 @@
+<div class="post">
+<div class="entry">
+
+<h2>Work With Us</h2>
+
+<p>Dr. Kobros is hiring! Great benefits! We require</p>
+
+<ul>
+<li>Minimum 3-5 years of relevant work experience</li>
+<li>Extensive knowledge of PHP, MySLQ and HTLM.</li>
+<li>KobrosQL knowledge a plus.</li>
+</ul>
+
+<h3>Send application</h3>
+
+<?php if($this->error): ?>
+<p class="error">
+Please check the form, there is an error.
+</p>
+<?php endif; ?>
+
+<form action="/?page=<?php echo $this->page->id; ?>&amp;action=send" method="post" enctype="multipart/form-data">
+
+<label for="name">Name</label>
+<input type="text" id="name" name="name">
+
+<label>CV (we accept only pdf)</label>
+<input type="file" name="cv" />
+
+<button type="submit">Send</button>
+
+</form>
+
+</div>
+</div>

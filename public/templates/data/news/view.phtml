@@ -1,0 +1,39 @@
+<?php $item = $this->item; ?>
+
+<div class="post">
+		<h2 class="title"><?php echo $item->title; ?></h2>
+				<p class="byline"><small>Posted on <?php echo $item->created; ?> by admin</small></p>
+				<div class="entry">
+					<?php echo $item->content; ?>
+				</div>
+			</div>
+
+<div class="post">
+<div class="entry">
+
+<h3>Comments</h3>
+
+<?php foreach($this->comments as $comment): ?>
+<p class="comment">
+<em><?php echo $comment->comment; ?> (<?php echo $comment->created; ?>)</em>
+</p>
+<?php endforeach; ?>
+
+<h3>Post a comment</h3>
+
+
+<form method="post" action="/?page=<?php echo $this->kobros->page->id; ?>&action=comment&amp;id=<?php echo $item->id; ?>">
+
+<textarea name="comment" id="comment">
+Your comment here
+</textarea>
+
+
+<button type="submit">Submit</button>
+
+</form>
+
+
+
+</div>
+</div>
