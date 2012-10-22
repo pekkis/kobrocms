@@ -10,7 +10,7 @@
  */
 $root = realpath(dirname(__FILE__));
 define('ROOT', $root);
-
+//asdasdasdasdasdasdasdasd
 // Add secret devel parameter to query string for devel info.
 if(isset($_GET['g04753m135'])) {
 	phpinfo();
