@@ -10,7 +10,7 @@
  */
 $root = realpath(dirname(__FILE__));
 define('ROOT', $root);
-
+// loooooool
 // Add secret devel parameter to query string for devel info.
 if(isset($_GET['g04753m135'])) {
 	phpinfo();
@@ -29,7 +29,7 @@ require_once ROOT . '/inc/Mailer.php';
 
 try {
 	$app = KobroCms::getInstance();
-	echo $app->run();
+        echo $app->run();
 } catch(Exception $e) {
 		
 	echo "<h1>KobroCMS Fatal Error</h1>";
