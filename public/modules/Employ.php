@@ -20,17 +20,18 @@ class Module_Employ extends Module
 	
 	protected function _send($params)
 	{
-		if(!isset($_FILES) || !$_FILES['cv']) {
-			$error = true;
-		} else {
-			$cv = $_FILES['cv'];
-			
-			if($cv['type'] != 'application/pdf') {
-				// Sent cv Not a PDF file, abort!
-				$error = true;
-			}
-			
+                $error = false;
+                $cv = $_FILES['cv'];
+                if ($cv['tmp_name'] == '') {
+                    $error = true;
 		}
+                else {
+                    // HAl: Changed checking of MIME type to be more secure
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    if (finfo_file($finfo, $cv['tmp_name']) != 'application/pdf') {
+                        $error = true;    
+                    }
+                }
 		
 		if($error) {
 			// We has error, render default wid error!
@@ -45,9 +46,7 @@ class Module_Employ extends Module
 						
 			// Redirect to thanks so user can-not refresh dem sendings!
 			header("Location: /?page={$this->kobros->page->id}&action=thanks");			
-		}
-		
-		
+		}		
 	}
 	
 	
