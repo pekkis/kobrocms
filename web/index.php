@@ -11,6 +11,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
 
 // Configure DI
 $app['config'] = parse_ini_file(__DIR__ . "/../config/config.ini");
@@ -21,8 +22,8 @@ $app['db'] = $app->share(function() use($app) {
 $app['service.news'] = $app->share(function() use($app) {
     return new Service\News($app['db']);
 });
-$app['service.contact'] = $app->share(function() {
-    return new Service\Contact();
+$app['service.contact'] = $app->share(function() use($app) {
+    return new Service\Contact($app['mailer'], $app['config']['contact_email'], 'Feedback from dem feedbacks form');
 });
 
 // Configure routes
