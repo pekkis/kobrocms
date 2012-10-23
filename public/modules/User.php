@@ -67,8 +67,8 @@ class Module_User extends Module
 			// We fail. Serve customer with nice error messages true kobro style!
 
 			// Define if user exist, give error message wrong password.
-			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-/*
+/*			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
+
                         if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
                                 $error = "Invalid password.";
 			} else {
@@ -83,8 +83,6 @@ class Module_User extends Module
 			$view->error = $error;
 			$view->user = $_SESSION['user'];
 			return $view->render(ROOT . '/templates/data/user/default.phtml');	
-			
-			
 		
 		}
 		
