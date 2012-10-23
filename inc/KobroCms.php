@@ -99,7 +99,7 @@ class KobroCms
 	{
 		// Autoload module from modules directory intelligently.
 		$module = 'Module_' . $params['module'];
-		require_once ROOT . '/modules/' . $params['module'] . '.php';
+		require_once ROOT . '/../modules/' . $params['module'] . '.php';
 		$module = new $module();
 		
 		// Delegating executable
