@@ -43,6 +43,7 @@ class Module_User extends Module
 		if($res) {
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
+                        session_regenerate_id(TRUE);
 
 			// Redirect
 		
@@ -67,12 +68,16 @@ class Module_User extends Module
 
 			// Define if user exist, give error message wrong password.
 			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
+/*
+                        if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
+                                $error = "Invalid password.";
 			} else {
 				// If user not exist he given other error.
 				$error = "User does not exist.";
 			}
+ */
+
+                        $error = "User identification failed.";
 			
 			$view = new View();
 			$view->error = $error;
@@ -90,7 +95,8 @@ class Module_User extends Module
 	protected function _logout($params)
 	{
 		// We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
-		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');		
+		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');
+                session_destroy();
 		
 		if($params['redirect']) {
 			// If we have param redirect we use dat to redirect.
