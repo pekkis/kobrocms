@@ -35,12 +35,14 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
-		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
+                $bcrypt = new bCrypt(12);
+                        
+		$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
 		
 		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
-		
-		if($res) {
+                
+		if (($res != FALSE) && $bcrypt->verify("{$params['password']}", $res->password)) {
+                    
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
                         session_regenerate_id(TRUE);
