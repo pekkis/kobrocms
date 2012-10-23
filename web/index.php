@@ -15,6 +15,7 @@ $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app['swiftmailer.options'] = array(
     'host' => 'smtp.metropolia.fi',
 );
+
 // Configure DI
 $app['config'] = parse_ini_file(__DIR__ . "/../config/config.ini");
 $app['db'] = $app->share(function() use($app) {
@@ -86,7 +87,7 @@ $app->get('/contact', function() use ($app) {
 })
 ->bind('contact');
 
-$app->post('/contact', function() use ($app) {
+$app->post('/contact/send', function() use ($app) {
     $fromEmail = $app['request']->get('from');
     $message = $app['request']->get('message');
     
@@ -96,6 +97,6 @@ $app->post('/contact', function() use ($app) {
         'error' => $error
     ));
 })
-->bind('contact');
+->bind('contact.send');
 
 $app->run();

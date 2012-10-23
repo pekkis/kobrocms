@@ -14,7 +14,7 @@
         </p>
         {% endif %}
 
-        <form action="" method="post">
+        <form action="{{ path('contact.send') }}" method="post">
             <label for="from">Email</label>
             <input type="text" id="from" name="from">
             <label for="message">Message</label>
