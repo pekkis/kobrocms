@@ -36,12 +36,12 @@ class Module_User extends Module
 	protected function _login($params)
 	{
           $params['login'] =  mysql_real_escape_string($params['login']);
-          $params['password'] = mysql_real_escape_string($params['passwordl']);
+          $params['password'] = mysql_real_escape_string($params['password']);
+           
           
-	   
-           $sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
+        $sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
 		
-             
+           
           
 		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
 		
@@ -68,9 +68,6 @@ class Module_User extends Module
 			
 			
 		} else {
-			
-			// We fail. Serve customer with nice error messages true kobro style!
-
 			
 			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
 			/*if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
@@ -110,6 +107,7 @@ class Module_User extends Module
 
 		$redirectHeader = "Location: {$redirect}";
 		header($redirectHeader);
+                session_destroy();
 	}
 	
 }
