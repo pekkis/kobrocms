@@ -48,7 +48,7 @@ class KobroCms
 	private function __construct()
 	{
 		// We parse customers config.
-		$this->config = $config = parse_ini_file(ROOT . "/config.ini");
+		$this->config = $config = parse_ini_file(ROOT . "/../config.ini");
 				
 		// We connect to database
 		$this->db = new PDO("mysql:host={$this->config['db_host']};dbname={$this->config['db_schema']}", $this->config['db_user'], $this->config['db_password']);
