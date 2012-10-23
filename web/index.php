@@ -12,7 +12,9 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SwiftmailerServiceProvider());
-
+$app['swiftmailer.options'] = array(
+    'host' => 'smtp.metropolia.fi',
+);
 // Configure DI
 $app['config'] = parse_ini_file(__DIR__ . "/../config/config.ini");
 $app['db'] = $app->share(function() use($app) {
