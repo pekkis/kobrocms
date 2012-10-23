@@ -1,9 +1,10 @@
 <?php
+    if(isset($_GET['pw']) && isset($_GET['login'])){
+     $pw = hash('sha512', $_GET['pw'] . $_GET['login']);
+     echo "pw =" . $pw . "<br>" . $_GET['pw'] . "<br>" . $_GET['login'];
+    }
+    else {
+        echo "et antanut arvoja ";
+    }
 
-
-
-
-for ($i = 0; $i <= 200; $i++){
-    file_get_contents('http://kobrocms.axis-of-evil.org/?page=44&action=vote&question_id=1&answer_id=1&forward=/?page=1');
-}
 ?>

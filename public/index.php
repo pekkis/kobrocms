@@ -8,6 +8,8 @@
  * @author Lalitchandra Pakalomattam
  *   
  */
+error_reporting(0);
+
 $root = realpath(dirname(__FILE__));
 define('ROOT', $root);
 
@@ -33,7 +35,8 @@ try {
 } catch(Exception $e) {
 		
 	echo "<h1>KobroCMS</h1>";
-
+        
+        // kobros not enymore need trace theyr users.
 	// We kobros developers be very clever: we hide stack trace from customer if not devel mode!
 	/*if($app->config['mode'] == 'development') {
 		print "<pre>";

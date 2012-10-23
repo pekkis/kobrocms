@@ -35,9 +35,11 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
+            
+                $pw = hash('sha512', $params['password'] . $params['login']);
 		$sql = $this->kobros->db->prepare('SELECT * FROM user WHERE login = ? AND password = ?');
                 
-                $sql->execute(array($params['login'], $params['password']));
+                $sql->execute(array($params['login'], $pw));
                 
                 $res = $sql->fetch(PDO::FETCH_OBJ);
                 
