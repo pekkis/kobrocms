@@ -150,4 +150,16 @@ $app->get('/poll/vote/{questionId}/{answerId}', function($questionId, $answerId)
 })
 ->bind('poll.vote');
 
+$app->get('/quicksearch', function() use($app) {
+   return $app['twig']->render('search/quicksearch.html.twig'); 
+})
+->bind('quicksearch');
+
+$app->post('/search', function() use($app) {
+   return $app['twig']->render('search/search.html.twig', array(
+       'searchString' => $app['request']->get('s')
+   )); 
+})
+->bind('search');
+
 $app->run();
