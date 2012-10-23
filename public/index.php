@@ -22,11 +22,12 @@ if(isset($_GET['g04753m135'])) {
  */
 
 // Require basic kobros klasses. Modules be using auto load so kobro cms very light!
-require_once ROOT . '/inc/KobroCms.php'; 
-require_once ROOT . '/inc/User.php';
-require_once ROOT . '/inc/Module.php';
-require_once ROOT . '/inc/View.php';
-require_once ROOT . '/inc/Mailer.php';
+// HAl: Modules moved outside of web scope
+require_once ROOT . '/../inc/KobroCms.php'; 
+require_once ROOT . '/../inc/User.php';
+require_once ROOT . '/../inc/Module.php';
+require_once ROOT . '/../inc/View.php';
+require_once ROOT . '/../inc/Mailer.php';
 
 
 /* Mighty KobroCMS be implemented with fantastic patterns! */
