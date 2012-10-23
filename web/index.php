@@ -34,17 +34,31 @@ $app['service.employ'] = $app->share(function() {
 $app['service.poll'] = $app->share(function() use($app) {
     return new Service\Poll($app['db']);
 });
+$app['service.html'] = $app->share(function() use($app) {
+    return new Service\Html($app['db']);
+});
 
 // Configure routes
 $app->get('/', function() use ($app) {
-    $stmt = $app['db']->query("SELECT content FROM html WHERE block_id = 1 AND page_id = 1");
-    $content = $stmt->fetchColumn();
-    
     return $app['twig']->render('home.html.twig', array (
-        'content' => $content
+        'content' => $app['service.html']->getHome()
     ));
 })
 ->bind('home');
+
+$app->get('/home/edit', function() use ($app) {
+    return $app['twig']->render('/home/edit.html.twig', array (
+        'content' => $app['service.html']->getHome()
+    ));
+})
+->bind('home.edit');
+
+$app->post('/home/save', function() use ($app) {
+    $app['service.html']->saveHome($app['request']->get('content'));
+    
+    return $app->redirect($app['url_generator']->generate('home.edit'));
+})
+->bind('home.save');
 
 $app->get('/about', function() use ($app) {
     $stmt = $app['db']->query("SELECT content FROM html WHERE block_id = 1 AND page_id = 2");

@@ -8,6 +8,11 @@
         {% autoescape false %}
             {{ content }}
         {% endautoescape %}
+            
+        {# Only for admin #}
+        <p class="forAdmin">
+            <a href="javascript:popupper('{{ path('home.edit') }}', 'html_edit');" class="html_edit">Edit</a>
+        </p>
     </div>
 </div>
 {% endblock %}
