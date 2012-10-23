@@ -15,9 +15,6 @@
         {% endif %}
 
         <form action="" method="post">
-            <input type="hidden" name="to" value="<?php echo $this->contact->mail_to; ?>" />
-            <input type="hidden" name="subject" value="<?php echo $this->contact->mail_subject; ?>" />
-            <input type="hidden" name="forward" value="<?php echo $this->forward; ?>" />
             <label for="from">Email</label>
             <input type="text" id="from" name="from">
             <label for="message">Message</label>

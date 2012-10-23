@@ -21,6 +21,9 @@ $app['db'] = $app->share(function() use($app) {
 $app['service.news'] = $app->share(function() use($app) {
     return new Service\News($app['db']);
 });
+$app['service.contact'] = $app->share(function() {
+    return new Service\Contact();
+});
 
 // Configure routes
 $app->get('/', function() use ($app) {
@@ -76,6 +79,18 @@ $app->post('/news/comment', function() use ($app) {
 $app->get('/contact', function() use ($app) {
     return $app['twig']->render('contact/default.html.twig', array (
         'error' => false
+    ));
+})
+->bind('contact');
+
+$app->post('/contact', function() use ($app) {
+    $fromEmail = $app['request']->get('from');
+    $message = $app['request']->get('message');
+    
+    $error = !$app['service.contact']->sendContact($fromEmail, $message);
+    
+    return $app['twig']->render('contact/default.html.twig', array (
+        'error' => $error
     ));
 })
 ->bind('contact');
