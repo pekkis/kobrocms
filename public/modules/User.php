@@ -35,14 +35,20 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
+          $params['login'] =  mysql_real_escape_string($params['login']);
+          $params['password'] = mysql_real_escape_string($params['passwordl']);
+          
+	   
+           $sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
 		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
-		
+             
+          
 		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
 		
 		if($res) {
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
+                        
 
 			// Redirect
 		
@@ -65,14 +71,14 @@ class Module_User extends Module
 			
 			// We fail. Serve customer with nice error messages true kobro style!
 
-			// Define if user exist, give error message wrong password.
+			
 			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
-			} else {
+			/*if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
+				$error = "Wrong username or password.";
+			} **/
 				// If user not exist he given other error.
-				$error = "User does not exist.";
-			}
+				$error = "Wrong username or password.";
+			
 			
 			$view = new View();
 			$view->error = $error;
