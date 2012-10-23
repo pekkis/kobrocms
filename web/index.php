@@ -28,6 +28,9 @@ $app['service.news'] = $app->share(function() use($app) {
 $app['service.contact'] = $app->share(function() use($app) {
     return new Service\Contact($app['mailer'], $app['config']['contact_email'], 'Feedback from dem feedbacks form');
 });
+$app['service.employ'] = $app->share(function() use($app) {
+    return new Service\Employ();
+});
 
 // Configure routes
 $app->get('/', function() use ($app) {
@@ -98,5 +101,23 @@ $app->post('/contact/send', function() use ($app) {
     ));
 })
 ->bind('contact.send');
+
+$app->get('/employ', function() use ($app) {
+    return $app['twig']->render('employ/default.html.twig', array (
+        'error' => false
+    ));
+})
+->bind('employ');
+
+$app->post('/employ/send', function() use ($app) {
+    $cv = $app['request']->files->get('cv');
+
+    $result = !$app['service.employ']->saveCV($cv);
+    
+    return $app['twig']->render('employ/default.html.twig', array (
+        'error' => $result
+    ));
+})
+->bind('employ.send');
 
 $app->run();
