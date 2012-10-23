@@ -73,4 +73,11 @@ $app->post('/news/comment', function() use ($app) {
 })
 ->bind('news.comment');
 
+$app->get('/contact', function() use ($app) {
+    return $app['twig']->render('contact/default.html.twig', array (
+        'error' => false
+    ));
+})
+->bind('contact');
+
 $app->run();
