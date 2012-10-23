@@ -78,8 +78,9 @@ class Module_News extends Module
 		$view = new View();
 		$view->item = $news[0];
 		
-		$comments = array();
-		$query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
+                $comments = array();
+            
+              $query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
 		while($res = $query->fetch(PDO::FETCH_OBJ)) {
 			$comments[] = $res;
 		}
@@ -112,7 +113,7 @@ class Module_News extends Module
 		
 		$now = new DateTime();
 		$now = $now->format('Y-m-d H:i:s');
-		
+                
 		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->kobros->db->prepare($sql);
 		

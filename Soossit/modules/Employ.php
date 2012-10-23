@@ -28,6 +28,7 @@ class Module_Employ extends Module
 			if($cv['type'] != 'application/pdf') {
 				// Sent cv Not a PDF file, abort!
 				$error = true;
+                                
 			}
 			
 		}
