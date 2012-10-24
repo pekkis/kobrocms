@@ -3,6 +3,7 @@
  * CHANGELOKI:
  * - "secret devel parameter to query string for devel info" kommentoitu pois.
  * - Virhe-ilmoitusten tiedot kommentoitu pois, k.o. sivua muutettu käyttäjäystävällisemmäksi.
+ * - require_once composerin autoload.php
  * 
  * This be the main Kobro-Script.
  * 
@@ -27,6 +28,8 @@ require_once ROOT . '/inc/User.php';
 require_once ROOT . '/inc/Module.php';
 require_once ROOT . '/inc/View.php';
 require_once ROOT . '/inc/Mailer.php';
+
+require_once ROOT . '/../vendor/autoload.php'; //swiftmaileria varten
 
 
 /* Mighty KobroCMS be implemented with fantastic patterns! */
