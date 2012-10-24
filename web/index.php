@@ -20,7 +20,12 @@ $app['db'] = $app->share(function() use($app) {
 
 // Configure routes
 $app->get('/', function() use ($app) {
-    return $app['twig']->render('home.html.twig');
+    $stmt = $app['db']->query("SELECT content FROM html WHERE block_id = 1 AND page_id = 1");
+    $content = $stmt->fetchColumn();
+    
+    return $app['twig']->render('home.html.twig', array (
+        'content' => $content
+    ));
 })
 ->bind('home');
 

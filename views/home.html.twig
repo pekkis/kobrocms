@@ -1,7 +1,13 @@
 {% extends 'baselayout.html.twig' %}
 
 {% block title%}Welcome{% endblock %}
-
-{% block content %}
-    hello ;)
+{% block content%}
+<div class="flower"><img src="images/img06.jpg" alt="" width="510" height="250" /></div>
+<div class="post">
+    <div class="entry">
+        {% autoescape false %}
+            {{ content }}
+        {% endautoescape %}
+    </div>
+</div>
 {% endblock %}
