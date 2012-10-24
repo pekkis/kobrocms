@@ -19,7 +19,7 @@ $app['db'] = $app->share(function() use($app) {
             $app['config']['db_user'], $app['config']['db_password']);
 });
 $app['service.news'] = $app->share(function() use($app) {
-    return new Service\News();
+    return new Service\News($app['db']);
 });
 
 // Configure routes
@@ -42,5 +42,25 @@ $app->get('/about', function() use ($app) {
     ));     
 })
 ->bind('about');
+
+$app->get('/news', function() use ($app) {
+    $news = $app['service.news']->getAllNews();
+
+    return $app['twig']->render('news/default.html.twig', array (
+        'news' => $news
+    ));     
+})
+->bind('news');
+
+$app->get('/news/view/{id}', function($id) use ($app) {
+    $news = $app['service.news']->getNewsById($id);
+    $comments = $app['service.news']->getNewsComments($id);
+
+    return $app['twig']->render('news/view.html.twig', array (
+        'news' => $news,
+        'comments' => $comments
+    ));     
+})
+->bind('news.view');
 
 $app->run();

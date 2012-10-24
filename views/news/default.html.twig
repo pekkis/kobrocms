@@ -1,0 +1,21 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Latest News{% endblock %}
+{% block content %}
+    {% for item in news %}
+    <div class="post">
+        <h2 class="title"><a href="{{ path('news.view', {'id': item.id})}}">{{ item.title }}</a></h2>
+        <p class="byline"><small>Posted on {{ item.created }} by admin</small></p>
+        <div class="entry">
+            {% autoescape false %}
+                {{ item.content }}
+            {% endautoescape %}
+            <p class="links">
+                <a href="{{ path('news.view', {'id': item.id})}}" class="more">
+                    &laquo;&laquo;&nbsp;&nbsp;Read More&nbsp;&nbsp;&raquo;&raquo;
+                </a>
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

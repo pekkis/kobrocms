@@ -1,0 +1,33 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Latest News{% endblock %}
+{% block content %}
+<div class="post">
+		<h2 class="title">{{ news.title }}</h2>
+        <p class="byline"><small>Posted on {{ news.created }} by admin</small></p>
+        <div class="entry">
+            {% autoescape false %}
+                {{ news.content }}
+            {% endautoescape %}
+        </div>
+</div>
+
+<div class="post">
+    <div class="entry">
+        <h3>Comments</h3>
+        {% for comment in comments %}
+        <p class="comment">
+            <em>{{ comment.comment}} ({{comment.created}})</em>
+        </p>
+        {% endfor %}
+        
+        <h3>Post a comment</h3>
+        <form method="post" action="/?page=<?php echo $this->kobros->page->id; ?>&action=comment&amp;id=<?php echo $item->id; ?>">
+            <textarea name="comment" id="comment">
+                Your comment here
+            </textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
