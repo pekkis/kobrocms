@@ -63,4 +63,14 @@ $app->get('/news/view/{id}', function($id) use ($app) {
 })
 ->bind('news.view');
 
+$app->post('/news/comment', function() use ($app) {
+    $newsId = $app['request']->get('newsId');
+    $comment = $app['request']->get('comment');
+    
+    $app['service.news']->addCommentToNews($newsId, $comment);
+
+    return $app->redirect('/news/view/' . $newsId);
+})
+->bind('news.comment');
+
 $app->run();

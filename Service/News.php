@@ -80,32 +80,17 @@ class News {
     }
 	
 	
-	public function _comment($params)
+	public function addCommentToNews($newsId, $comment)
 	{
-				
-		$pageId = (int) $params['page'];
-		$itemId = (int) $params['id'];
-		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->db->query($sql);
-		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
-			$news[] = $res; 
-		}
-		
-		if(!sizeof($news)) {
-			throw new Exception('No news be here');
-		}
-		
-		$item = $news[0];
-		
-		$now = new DateTime();
+        // assert that news exists with given id
+		$news = $this->getNewsById($newsId);
+
+		$now = new \DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 		
 		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->db->prepare($sql);
 		
-		$stmt->execute(array($item->id, $_POST['comment'], $now));
-		header("Location: {$_SERVER['HTTP_REFERER']}");
+		$stmt->execute(array($newsId, $comment, $now));
 	}
 }
