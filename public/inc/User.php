@@ -1,5 +1,8 @@
 <?php
 /**
+ * CHANGELOKI:
+ * - KBRSESSIONID piparinimi >> KBRSI piparinimi
+ * 
  * User klass be handling all users needs.
  *
  * @author Devadutt Chattopadhyay
@@ -21,7 +24,7 @@ class User
 	{
 		// We be setting dem session properties and starting it wid dem it deserve!
 
-		session_name('KBRSESSIONID');
+		session_name('KBRSI');
 		session_start();
 
 		if(!isset($_SESSION['user'])) {

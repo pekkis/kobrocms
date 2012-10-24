@@ -1,9 +1,12 @@
 <?php
 /**
- * User module
+ * CHANGELOKI:
+ * - Poistettu käytännössä turha referer parametri.
+ * - action=login funktion käyttäjäsyötteeseen lisätty escapetus.
+ * - action=logout funktioon lisätty piparien deletointi server-side.
  * 
- * @author Rajanigandha Balasubramanium
- *
+ * 
+ * User module
  */
 class Module_User extends Module
 {
@@ -35,44 +38,25 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
-		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
+            
+                $username = $this->kobros->db->quote($params['username']);
+                $passwd = $this->kobros->db->quote($params['passwd']);
+		$sql = "SELECT * FROM user WHERE login = {$username} AND password = {$passwd}";
+                
+                
 		
 		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
 		
 		if($res) {
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
-
-			// Redirect
-		
-			if($params['redirect']) {
-				// If we have param redirect we use dat to redirect.
-				$redirect = $params['redirect'];
-			} elseif(isset($_SERVER['HTTP_REFERER'])) {
-				// We know dem referes. We can go back there.
-				$redirect = $_SERVER['HTTP_REFERER'];
-			} else {
-				$redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-			}
-	
-			$redirectHeader = "Location: {$redirect}";
-			
-			header($redirectHeader);
 			
 			
 		} else {
 			
-			// We fail. Serve customer with nice error messages true kobro style!
-
-			// Define if user exist, give error message wrong password.
-			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
-			} else {
-				// If user not exist he given other error.
-				$error = "User does not exist.";
-			}
+			//Wrong user or pw
+                    
+			$error = "Check your username and password.";
 			
 			$view = new View();
 			$view->error = $error;
@@ -90,20 +74,10 @@ class Module_User extends Module
 	protected function _logout($params)
 	{
 		// We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
-		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');		
+	    setcookie(session_name(), $_COOKIE[session_name()], 1, '/');	
+            $filename = ('/../../../../../tmp/sess_' . $params['KBRSI']);
+            unlink($filename);
 		
-		if($params['redirect']) {
-			// If we have param redirect we use dat to redirect.
-			$redirect = $params['redirect'];
-		} elseif(isset($_SERVER['HTTP_REFERER'])) {
-			// We know dem referes. We can go back there.
-			$redirect = $_SERVER['HTTP_REFERER'];
-		} else {
-			$redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-		}
-
-		$redirectHeader = "Location: {$redirect}";
-		header($redirectHeader);
 	}
 	
 }

@@ -1,5 +1,8 @@
 <?php
 /**
+ * CHANGELOKI:
+ * - default- & edit-funktioiden SQL queryjen käyttäjäinput escapettu.
+ * 
  * HTML module be the basicext module of them all
  * 
  * @author Devadutt Chattopadhyay
@@ -21,7 +24,10 @@ class Module_Html extends Module
 		}
 
 		// We fetch from da base.
-		$sql = "SELECT content FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
+                $block = $this->kobros->db->quote($params['block_id']);
+                $page = $this->kobros->db->quote($params['page']);
+
+		$sql = "SELECT content FROM html WHERE block_id = {$block} AND page_id = {$page}";
 		$q = $this->kobros->db->query($sql);
 
 		// We put view
@@ -55,7 +61,10 @@ class Module_Html extends Module
 		}
 
 		// We fetch all from da base.
-		$sql = "SELECT * FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
+                $block = $this->kobros->db->quote($params['block_id']);
+                $page = $this->kobros->db->quote($params['page']);
+                
+		$sql = "SELECT * FROM html WHERE block_id = {$block_id} AND page_id = {$page}";
 		$q = $this->kobros->db->query($sql);
 		
 		

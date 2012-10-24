@@ -1,8 +1,13 @@
 <div class="post">
 <div class="entry">
 
+/**
+* CHANGELOKI:
+* - Lomakkeen kenttien nimet muutettu, jotteivat ole tietokannan sarakkeita vastaavia nimiä.
+*/
 
-<h2>Login</h2>
+
+<h2>Log in</h2>
 
 <?php if($this->user->role == 'anonymous'): ?>
 
@@ -15,10 +20,10 @@
 <?php endif; ?>
 
 <label>Login</label>
-<input type="text" name="login" />
+<input type="text" name="username" />
 
 <label>Password</label>
-<input type="password" name="password" />
+<input type="password" name="passwd" />
 
 <button type="submit">Login</button>
 

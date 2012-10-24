@@ -1,7 +1,10 @@
 <?php
 /**
- * Custom Kobros Employment Module (btw why dem need to employ when them already having us three!)
+ * CHANGELOKI:
+ * - Ladatut tiedostot tarkistetaan välittömästi server-side (objektilla finfo(),) ja jos mime-type eri >> delete.
+ * - Lisävarmistuksena alku nimetään rec_cv_, JOS joku saisi ujutettua vahingollisia filuja, ei löydä (ainakaan heti).
  * 
+ *  
  * @author Lalitchandra Pakalomattam
  *
  */
@@ -23,7 +26,8 @@ class Module_Employ extends Module
 		if(!isset($_FILES) || !$_FILES['cv']) {
 			$error = true;
 		} else {
-			$cv = $_FILES['cv'];
+			
+                        $cv = $_FILES['cv'];
 			
 			if($cv['type'] != 'application/pdf') {
 				// Sent cv Not a PDF file, abort!
@@ -41,8 +45,14 @@ class Module_Employ extends Module
 		} else {
 
 			// It must be uploaded file to move'n groove. We be moving the uploaded file outside root for security of course stupid! 
-			move_uploaded_file($cv['tmp_name'], $this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']);
-						
+			move_uploaded_file($cv['tmp_name'], $this->kobros->config['safe_data'] . '/uploaded/' . 'rec_cv_' . $cv['name']);
+			
+			$file_info = new finfo(FILEINFO_MIME_TYPE);
+                        if ($file_info->file($this->kobros->config['safe_data'] . '/uploaded/' . 'rec_cv_' . $cv['name']) != 'application/pdf') {
+                                                        unlink($this->kobros->config['safe_data'] . '/uploaded/' . 'rec_cv_' . $cv['name']);
+                                                             }
+                                              
+                        
 			// Redirect to thanks so user can-not refresh dem sendings!
 			header("Location: /?page={$this->kobros->page->id}&action=thanks");			
 		}
