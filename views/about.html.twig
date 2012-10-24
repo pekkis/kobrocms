@@ -4,11 +4,9 @@
 {% block content%}
 <div class="post">
     <div class="entry">
-        <h2>{{ title }}</h2>
-        <p>Dr. Kobros Foundation was founded in 1889 by Dr. Ragnar Kobros. Born in Christiania, Norway, sixty-eight years earlier, Dr. Kobros journeyed to America as a young man to make a better life for himself.</p>
-        <p>Ragnar Kobros, an uneducated but visionary man, assumed the title of "Doctor" and made a fortune selling snake oil in the West. Later on, he founded the foundation to preserve his unique heritage of selling solutions that may or may not (and probably won't) work for an astonishingly high price.</p>
-        <p>Since then, the foundation has proudly been selling snake oil of many kinds to unsuspesting customers all around the world.</p>
-        <p>During the last decade of the 20th century, the foundation's current chairman, Dr. Ragnar Kobros, IV, succesfully launched a great transformation of the family business: he invented and succesfully participated the Internet Bubble; making many millions in the process.</p>
+        {% autoescape false %}
+            {{ content }}
+        {% endautoescape %}
     </div>
 </div>
 {% endblock %}
