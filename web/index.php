@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+$autoloader = require_once __DIR__.'/../vendor/autoload.php';
+$autoloader->add('Service', __DIR__.'/../');
 
 $app = new Silex\Application();
 $app['debug'] = true;
@@ -16,6 +17,9 @@ $app['config'] = parse_ini_file(__DIR__ . "/../config/config.ini");
 $app['db'] = $app->share(function() use($app) {
     return new PDO("mysql:host={$app['config']['db_host']};dbname={$app['config']['db_schema']}", 
             $app['config']['db_user'], $app['config']['db_password']);
+});
+$app['service.news'] = $app->share(function() use($app) {
+    return new Service\News();
 });
 
 // Configure routes
