@@ -44,6 +44,12 @@ class KobroCms
 	 * @var User
 	 */
 	public $user;
+        
+        /*
+         * Validaattori
+         * 
+         */
+        public $validator;
 	
 	private function __construct()
 	{
@@ -53,6 +59,8 @@ class KobroCms
 		// We connect to database
 		$this->db = new PDO("mysql:host={$this->config['db_host']};dbname={$this->config['db_schema']}", $this->config['db_user'], $this->config['db_password']);
 		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $this->validator = new Validator();
+                
 	}
 	
 	

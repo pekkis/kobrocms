@@ -11,11 +11,17 @@
 $root = realpath(dirname(__FILE__));
 define('ROOT', $root);
 
+ini_set('session.use_trans_sid', 0);
+ini_set('session.use_only_cookies', 1);
+
 // Add secret devel parameter to query string for devel info.
+/*
 if(isset($_GET['g04753m135'])) {
 	phpinfo();
 	die();
 }
+
+ */
 
 // Require basic kobros klasses. Modules be using auto load so kobro cms very light!
 require_once ROOT . '/inc/KobroCms.php'; 
@@ -23,6 +29,8 @@ require_once ROOT . '/inc/User.php';
 require_once ROOT . '/inc/Module.php';
 require_once ROOT . '/inc/View.php';
 require_once ROOT . '/inc/Mailer.php';
+require_once ROOT . '/inc/Validation.php';
+require_once ROOT . '/inc/Hashing.php';
 
 
 /* Mighty KobroCMS be implemented with fantastic patterns! */
