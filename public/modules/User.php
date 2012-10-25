@@ -36,10 +36,12 @@ class Module_User extends Module
 	protected function _login($params)
 	{
 		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
-		
-		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
-		
+		$query = "SELECT * FROM user WHERE login = ? AND password = ?";
+		$statement = $this->kobros->db->prepare($query);
+		$parameters = array($params['login'], $params['password']);
+                $statement->execute($parameters);
+                $res = $statement->fetch(PDO::FETCH_OBJ);
+                
 		if($res) {
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
@@ -66,13 +68,13 @@ class Module_User extends Module
 			// We fail. Serve customer with nice error messages true kobro style!
 
 			// Define if user exist, give error message wrong password.
-			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
-			} else {
-				// If user not exist he given other error.
-				$error = "User does not exist.";
-			}
+			//$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
+			//if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
+			//	$error = "Invalid password.";
+			//} else {
+		//		// If user not exist he given other error.
+				$error = "Invalid credentials";
+			
 			
 			$view = new View();
 			$view->error = $error;
@@ -91,7 +93,7 @@ class Module_User extends Module
 	{
 		// We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
 		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');		
-		
+		session_destroy();
 		if($params['redirect']) {
 			// If we have param redirect we use dat to redirect.
 			$redirect = $params['redirect'];
