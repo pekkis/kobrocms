@@ -28,8 +28,11 @@ $app['service.news'] = $app->share(function() use($app) {
 $app['service.contact'] = $app->share(function() use($app) {
     return new Service\Contact($app['mailer'], $app['config']['contact_email'], 'Feedback from dem feedbacks form');
 });
-$app['service.employ'] = $app->share(function() use($app) {
+$app['service.employ'] = $app->share(function() {
     return new Service\Employ();
+});
+$app['service.poll'] = $app->share(function() use($app) {
+    return new Service\Poll($app['db']);
 });
 
 // Configure routes
@@ -128,5 +131,23 @@ $app->post('/employ/send', function() use ($app) {
     ));
 })
 ->bind('employ.send');
+
+$app->get('/poll/{id}', function($id) use ($app) {
+    $question = $app['service.poll']->getQuestion($id);
+    $answers = $app['service.poll']->getAnswers($id);
+    
+    return $app['twig']->render('poll/default.html.twig', array (
+        'question' => $question,
+        'answers' => $answers
+    ));
+})
+->bind('poll');
+
+$app->get('/poll/vote/{questionId}/{answerId}', function($questionId, $answerId) use ($app) {
+    $app['service.poll']->vote($questionId, $answerId);
+    
+    return $app->redirect('/');
+})
+->bind('poll.vote');
 
 $app->run();

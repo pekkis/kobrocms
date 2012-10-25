@@ -50,11 +50,8 @@
 	<div id="page">
 		<div id="sidebar1" class="sidebar">
 			<ul>
-                {{ render(path('news.headlines', {count: 3})) }}
-                {% block poll %}
-                    {% include 'poll.html.twig' %}
-                    {# <?php echo $this->module(array('module' => 'Poll', 'action' => 'default', 'question_id' => 1, 'forward'  => '/?page=1')); ?> #}
-                {% endblock %}
+                {{ render(path('news.headlines', {'count': 3})) }}
+                {{ render(path('poll', {'id': 1})) }}
             </ul>
 		</div>
 		<!-- start content -->
