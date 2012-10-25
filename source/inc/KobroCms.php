@@ -84,8 +84,12 @@ class KobroCms
 		// We be casting dem page id to integer so the parameter always valid.
 		$pageId = (int) $pageId;
 		
-		$sql = "SELECT * FROM page WHERE id = {$pageId}";
-		return $this->db->query($sql)->fetch(PDO::FETCH_OBJ);
+		$sql = "SELECT * FROM page WHERE id = :pageId";
+                $query = $this->db->prepare($sql);
+                $query->bindParam(":pageId", $pageId, PDO::PARAM_INT);
+                $query->execute();
+		return $query->fetch(PDO::FETCH_OBJ);
+        
 	}
 	
 	

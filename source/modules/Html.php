@@ -21,8 +21,12 @@ class Module_Html extends Module
 		}
 
 		// We fetch from da base.
-		$sql = "SELECT content FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
-		$q = $this->kobros->db->query($sql);
+                
+                $sql = "SELECT content FROM html WHERE block_id = :blockId AND page_id = :pageId";
+                $q = $this->kobros->db->prepare($sql);
+                $q->bindParam(":blockId", $params['block_id'], PDO::PARAM_INT);
+                $q->bindParam(":pageId", $page->id, PDO::PARAM_INT);
+                $q->execute();
 
 		// We put view
 		$view = new View();		
@@ -55,8 +59,11 @@ class Module_Html extends Module
 		}
 
 		// We fetch all from da base.
-		$sql = "SELECT * FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
-		$q = $this->kobros->db->query($sql);
+		$sql = "SELECT content FROM html WHERE block_id = :blockId AND page_id = :pageId";
+                $q = $this->kobros->db->prepare($sql);
+                $q->bindParam(":blockId", $params['block_id'], PDO::PARAM_INT);
+                $q->bindParam(":pageId", $page->id, PDO::PARAM_INT);
+                $q = $q->execute();
 		
 		
 		// We put view
@@ -84,10 +91,13 @@ class Module_Html extends Module
 	public function _save($params)
 	{
 		// We use prepared statement it be safe.
-		$sql = "UPDATE html SET content = ? WHERE page_id = ? AND block_id = ?";
-		$stmt = $this->kobros->db->prepare($sql);
+		$sql = "UPDATE html SET content = :content WHERE page_id = :page AND block_id = :blockId";
+		$query = $this->kobros->db->prepare($sql);
+                $query->bindParam(":content", $params['content'], PDO::PARAM_INT);
+                $query->bindParam(":page", $params['page'], PDO::PARAM_INT);
+                $query->bindParam(":blockId", $params['block_id'], PDO::PARAM_INT);
+                $query->execute();
 		
-		$stmt->execute(array($params['content'], $params['page'], $params['block_id']));
 		
 		// After savings we go back to previous.
 		header("Location: {$_SERVER['HTTP_REFERER']}");

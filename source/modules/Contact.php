@@ -21,10 +21,11 @@ class Module_Contact extends Module
 	{
 		$pageId = (int) $pageId;
 		
-		$contact = $this->kobros->db->query("SELECT * FROM contact where page_id = {$pageId}")->fetch(PDO::FETCH_OBJ); 
-		
-		return $contact;
-		
+                $sql = "SELECT * FROM contact WHERE id = :pageId";
+                $query = $this->kobros->db->prepare($sql);
+                $query->bindParam(":pageId", $pageId, PDO::PARAM_INT);
+                $query->execute();
+		return $query->fetch(PDO::FETCH_OBJ);
 	}
 	
 	

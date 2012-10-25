@@ -13,18 +13,19 @@ class Module_News extends Module
 	{
 		$limit = (int) $limit;
 		
-		// Be private method so no can call from module! Safe!
-		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
-		$query = $this->kobros->db->query($sql);
+		// Be private method so no can call from module! Safe!                
+                
+		$sql = "SELECT * FROM news WHERE page_id = :pageId ORDER BY created DESC LIMIT :limit";
+		$query = $this->kobros->db->prepare($sql);
+                $query->bindParam(":pageId",$pageId, PDO::PARAM_INT);
+                $query->bindParam(":limit", $limit, PDO::PARAM_INT);
+                $query->execute();   
 		$news = array();
 		while($res = $query->fetch(PDO::FETCH_OBJ)) {
 			$news[] = $res; 
-		}
-		
-		
+                }           
+                
 		return $news;
-
 	}
 	
 	
@@ -63,9 +64,13 @@ class Module_News extends Module
 	{
 		$pageId = (int) $params['page'];
 		$itemId = (int) $params['id'];
-		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->kobros->db->query($sql);
+                
+                $sqlSelect = "SELECT * FROM news WHERE page_id = :pageId AND id = :itemId";
+                $query = $this->kobros->db->prepare($sqlSelect);
+                $query->bindParam(":pageId",$pageId, PDO::PARAM_INT);
+                $query->bindParam(":itemId", $itemId, PDO::PARAM_INT);
+                $query->execute();                
+                
 		$news = array();
 		while($res = $query->fetch(PDO::FETCH_OBJ)) {
 			$news[] = $res; 
@@ -79,7 +84,12 @@ class Module_News extends Module
 		$view->item = $news[0];
 		
 		$comments = array();
-		$query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
+                
+                $sqlNewsComments = "SELECT * FROM news_comments WHERE news_id = :id ORDER BY created DESC";
+                $query = $this->kobros->db->prepare($sqlNewsComments);
+                $query->bindParam(":id",$view->item->id, PDO::PARAM_INT);
+                $query->execute();
+                
 		while($res = $query->fetch(PDO::FETCH_OBJ)) {
 			$comments[] = $res;
 		}
@@ -97,8 +107,12 @@ class Module_News extends Module
 		$pageId = (int) $params['page'];
 		$itemId = (int) $params['id'];
 		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->kobros->db->query($sql);
+		$sqlSelect = "SELECT * FROM news WHERE page_id = :pageId AND id = :itemId";
+		$query = $this->kobros->db->prepare($sqlSelect);
+                $query->bindParam(":pageId",$pageId, PDO::PARAM_INT);
+                $query->bindParam(":itemId", $itemId, PDO::PARAM_INT);
+                $query->execute();
+                
 		$news = array();
 		while($res = $query->fetch(PDO::FETCH_OBJ)) {
 			$news[] = $res; 
@@ -113,17 +127,14 @@ class Module_News extends Module
 		$now = new DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 		
-		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
-		$stmt = $this->kobros->db->prepare($sql);
-		
-		$stmt->execute(array($item->id, $_POST['comment'], $now));
-
-		
+		$sqlInsert = "INSERT INTO news_comments (news_id, comment, created) VALUES(:itemId, :comment, :now)";
+		$stmt = $this->kobros->db->prepare($sqlInsert);
+                $query->bindParam(":itemId", $itemId, PDO::PARAM_INT);
+                $query->bindParam(":comment", $_POST['comment'], PDO::PARAM_INT);
+                $query->bindParam(":now", $now, PDO::PARAM_INT);
+		$stmt->execute();
 		
 		header("Location: {$_SERVER['HTTP_REFERER']}");
-		
-		
-		
 		
 	}
 	

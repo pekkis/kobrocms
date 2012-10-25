@@ -14,14 +14,17 @@ class Module_Poll extends Module
 		$view->page = $this->kobros->page;
 		$view->error = false;
 		
-		$sql = "SELECT * FROM question WHERE id = {$params['question_id']}";
-		$q = $this->kobros->db->query($sql);
-		
+		$sql = "SELECT * FROM question WHERE id = :questionId";
+                $q = $this->kobros->db->prepare($sql);
+                $q->bindParam(":questionId", $params['question_id'], PDO::PARAM_INT);
+		$q->execute();		
 		
 		$question = $q->fetch(PDO::FETCH_OBJ);
 		
-		$sql = "SELECT * FROM answer WHERE question_id = {$question->id}";
-		$q = $this->kobros->db->query($sql);
+		$sql = "SELECT * FROM answer WHERE id = :questionId";
+                $q = $this->kobros->db->prepare($sql);
+                $q->bindParam(":questionId", $params['question_id'], PDO::PARAM_INT);
+		$q->execute();
 		
 		$answers = array();
 		while($res = $q->fetch(PDO::FETCH_OBJ)) {
