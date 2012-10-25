@@ -23,8 +23,8 @@ require_once ROOT . '/inc/User.php';
 require_once ROOT . '/inc/Module.php';
 require_once ROOT . '/inc/View.php';
 require_once ROOT . '/inc/Mailer.php';
-
-
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once ROOT . '/inc/htmlpurifier-4.4.0/library/HTMLPurifier.auto.php';
 /* Mighty KobroCMS be implemented with fantastic patterns! */
 
 try {
