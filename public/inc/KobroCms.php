@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This be the main KobroCRM klass.
  * 

@@ -43,6 +43,7 @@ class Module_User extends Module
 		if($res) {
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
+                        session_regenerate_id(false);
 
 			// Redirect
 		
@@ -90,7 +91,8 @@ class Module_User extends Module
 	protected function _logout($params)
 	{
 		// We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
-		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');		
+		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');
+                // session_destroy();
 		
 		if($params['redirect']) {
 			// If we have param redirect we use dat to redirect.
