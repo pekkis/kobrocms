@@ -1,0 +1,12 @@
+<li>
+    <h2>Latest News</h2>
+    <ul>
+        {% for item in news %}
+        <li><a href="{{ path('news.view', {id: item.id}) }}">{{ item.title }}</a></li>
+        {% endfor %}
+    </ul>
+</li>
+
+<p class="entry">
+    <a href="{{ path('news') }}">More news &raquo;</a>
+</p>

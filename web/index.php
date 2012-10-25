@@ -73,6 +73,15 @@ $app->get('/news/view/{id}', function($id) use ($app) {
 })
 ->bind('news.view');
 
+$app->get('/news/headlines/{count}', function($count) use ($app) {
+    $news = $app['service.news']->getHeadlines($count);
+
+    return $app['twig']->render('news/headlines.html.twig', array (
+        'news' => $news
+    ));     
+})
+->bind('news.headlines');
+
 $app->post('/news/comment', function() use ($app) {
     $newsId = $app['request']->get('newsId');
     $comment = $app['request']->get('comment');

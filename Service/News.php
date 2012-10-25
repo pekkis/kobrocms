@@ -11,39 +11,22 @@ class News {
     public function __construct(\PDO $db) {
         $this->db = $db;
     }
-    
-    private function _newsQuery($pageId, $limit)
+	
+	/**
+     * @return array
+     */
+	public function getHeadlines($limit)
 	{
-		$limit = (int) $limit;
-		
-		// Be private method so no can call from module! Safe!
-		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
+		$sql = "SELECT * FROM news ORDER BY created DESC LIMIT {$limit}";
 		$query = $this->db->query($sql);
+        
 		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
+		while ($res = $query->fetch()) {
 			$news[] = $res; 
 		}
         
 		return $news;
-	}
-	
-	/**
-	 * Headlines
-	 * 
-	 * @param $params
-	 * @return string
-	 */
-	public function _headlines($params)
-	{
-		$news = $this->_newsQuery($params['page'], $params['number']);
-						
-		$view = new View();
-		$view->news = $news;
-		$view->page_id = $params['page'];
-		
-		return $view->render(ROOT . '/templates/data/news/headlines.phtml');
-	}	
+    }
 	
 
     /**

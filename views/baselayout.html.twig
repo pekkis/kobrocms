@@ -50,15 +50,12 @@
 	<div id="page">
 		<div id="sidebar1" class="sidebar">
 			<ul>
-                            {% block news %}
-                                {% include 'headlines.html.twig' %}
-                                {# <?php echo $this->module(array('module' => 'News', 'page' => 3, 'action' => 'headlines', 'number' => 3)); ?> #}
-                            {% endblock %}
-                            {% block poll %}
-                                {% include 'poll.html.twig' %}
-                                {# <?php echo $this->module(array('module' => 'Poll', 'action' => 'default', 'question_id' => 1, 'forward'  => '/?page=1')); ?> #}
-                            {% endblock %}
-                        </ul>
+                {{ render(path('news.headlines', {count: 3})) }}
+                {% block poll %}
+                    {% include 'poll.html.twig' %}
+                    {# <?php echo $this->module(array('module' => 'Poll', 'action' => 'default', 'question_id' => 1, 'forward'  => '/?page=1')); ?> #}
+                {% endblock %}
+            </ul>
 		</div>
 		<!-- start content -->
 		<div id="content">
