@@ -20,6 +20,7 @@ class Module_Employ extends Module
 	
 	protected function _send($params)
 	{
+             
 		if(!isset($_FILES) || !$_FILES['cv']) {
 			$error = true;
 		} else {

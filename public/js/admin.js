@@ -2,7 +2,7 @@
 
 var tinyOptions = {
 			// Location of TinyMCE script
-		script_url : '/js/tinymce/jscripts/tiny_mce/tiny_mce.js',
+		script_url : '/Soossit/js/tinymce/jscripts/tiny_mce/tiny_mce.js',
 
 		// General options
 		theme : "advanced",
