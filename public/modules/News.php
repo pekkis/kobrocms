@@ -13,7 +13,7 @@ class Module_News extends Module
 	{
 		$limit = (int) $limit;
 		
-		// Be private method so no can call from module! Safe!
+		
 		
 		$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
 		$query = $this->kobros->db->query($sql);
@@ -113,10 +113,15 @@ class Module_News extends Module
 		$now = new DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 		
-		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
+		$config = HTMLPurifier_Config::createDefault(); // HTML PURIFIER
+                $purifier = new HTMLPurifier($config);
+                $dirty_html = strip_tags($_POST['comment']);
+                $clean_html = $purifier->purify($dirty_html);
+                
+                $sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->kobros->db->prepare($sql);
 		
-		$stmt->execute(array($item->id, $_POST['comment'], $now));
+		$stmt->execute(array($item->id,$clean_html, $now)); // CLEAN HTML
 
 		
 		
