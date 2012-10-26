@@ -35,8 +35,9 @@ KobroTracker.get = function() {
 KobroTracker.prototype = {
 		
 	track: function() {
-		// we append image to document to send stuff to dr. kobros tracker server.
-		var appender = "<img src='http://dr-kobros.com/track.html?location=" + this.strLocation + "&anchor=" + this.strHash + "' />";  
+		
+                // we append image to document to send stuff to dr. kobros tracker server.
+		var appender = "<img src='" + document.location.protocol + "//dr-kobros.com/track.html?location=" + this.strLocation + "&anchor=" + this.strHash + "' />";  
 		$("#kobrotracker").append(appender);
 	},
 		

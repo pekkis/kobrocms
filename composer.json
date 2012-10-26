@@ -1,0 +1,25 @@
+# composer.json (PROJEKTIN juuressa)
+
+{
+    "require": {
+        "swiftmailer/swiftmailer": "4.2.*"
+    }
+}
+
+# index.php:hen
+require_once __DIR__ . '/../vendor/autoload.php';
+
+#komennot (juuressa)
+
+# asennus
+
+sudo apt-get install curl (jos ei curlia asennettuna)
+curl -s https://getcomposer.org/installer | php
+
+# dependencyjen asennus
+
+php composer.phar install
+
+# dependencyjen päivitys
+
+php composer.phar update
