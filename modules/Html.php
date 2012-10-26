@@ -21,12 +21,17 @@ class Module_Html extends Module
 		}
 
 		// We fetch from da base.
-		$sql = "SELECT content FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
-		$q = $this->kobros->db->query($sql);
-
+		$sql = "SELECT content FROM html WHERE block_id = :block_id AND page_id = :page";
+		$stmt = $this->kobros->db->prepare($sql);
+               
+                $stmt->bindValue('block_id', $params['block_id'], PDO::PARAM_INT);
+                $stmt->bindValue('page', $page->id, PDO::PARAM_INT);
+                
+                $stmt->execute();
+                
 		// We put view
 		$view = new View();		
-		$view->html = $q->fetch(PDO::FETCH_COLUMN);
+		$view->html = $stmt->fetch(PDO::FETCH_COLUMN);
 		
 		// User is needed because he has maybe admin right
 		$view->user = $_SESSION['user'];

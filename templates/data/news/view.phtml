@@ -15,7 +15,7 @@
 
 <?php foreach($this->comments as $comment): ?>
 <p class="comment">
-<em><?php echo $comment->comment; ?> (<?php echo $comment->created; ?>)</em>
+<em><?php echo $this->escape($comment->comment); ?> (<?php echo $comment->created; ?>)</em>
 </p>
 <?php endforeach; ?>
 

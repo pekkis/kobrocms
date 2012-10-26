@@ -33,8 +33,14 @@ class View
 	public function __get($key)
 	{
 		return (isset($this->_vars[$key])) ? $this->_vars[$key] : null; 
-	}
+                
+        }
 	
+        
+        public function escape($unescaped)
+        {
+            return htmlspecialchars($unescaped, ENT_COMPAT, 'utf-8');
+	}
 	
 	/**
 	 * Da view script be rendered in dem view's scope.

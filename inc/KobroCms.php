@@ -1,4 +1,9 @@
 <?php
+
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Connection;
+
 /**
  * This be the main KobroCRM klass.
  * 
@@ -19,7 +24,7 @@ class KobroCms
 	/**
 	 * This be PDO reference
 	 * 
-	 * @var PDO 
+	 * @var Connection
 	 */
 	public $db;
 	
@@ -49,10 +54,25 @@ class KobroCms
 	{
 		// We parse customers config.
 		$this->config = $config = parse_ini_file(ROOT . "/config.ini");
-				
+		
+                
+                
+                $params = array(
+                    'dbname' => $config['db_schema'],
+                    'user' => $config['db_user'],
+                    'password' => $config['db_password'],
+                    'host' => $config['db_host'],
+                    'driver' => 'pdo_mysql',
+                );
+
+                $config = new \Doctrine\DBAL\Configuration();
+                $conn = DriverManager::getConnection($params, $config);
+
+                $this->db = $conn;
+                
 		// We connect to database
-		$this->db = new PDO("mysql:host={$this->config['db_host']};dbname={$this->config['db_schema']}", $this->config['db_user'], $this->config['db_password']);
-		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		// $this->db = new PDO("mysql:host={$this->config['db_host']};dbname={$this->config['db_schema']}", $this->config['db_user'], $this->config['db_password']);
+		// $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
 	
@@ -158,13 +178,6 @@ class KobroCms
 		
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
