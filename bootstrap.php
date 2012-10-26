@@ -36,10 +36,10 @@ try {
 	$app = KobroCms::getInstance();
 	echo $app->run();
 } catch(Exception $e) {
-		
-	echo "<h1>KobroCMS Fatal Error</h1>";
-	
-	echo "<em>" . $e . "</em>";
+
+        header("HTTP/1.0 500 Internal Server Error");
+    
+	echo "<h1>404 Multifail</h1>";
 
 	// We kobros developers be very clever: we hide stack trace from customer if not devel mode!
 	if($app->config['mode'] == 'development') {
