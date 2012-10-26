@@ -20,6 +20,7 @@ class Module_Employ extends Module
 	
 	protected function _send($params)
 	{
+             
 		if(!isset($_FILES) || !$_FILES['cv']) {
 			$error = true;
 		} else {
@@ -28,6 +29,7 @@ class Module_Employ extends Module
 			if($cv['type'] != 'application/pdf') {
 				// Sent cv Not a PDF file, abort!
 				$error = true;
+                                
 			}
 			
 		}

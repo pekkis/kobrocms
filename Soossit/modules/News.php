@@ -14,7 +14,7 @@ class Module_News extends Module
 		$limit = (int) $limit;
 		
 		// Be private method so no can call from module! Safe!
-		
+		$pageId = mysql_real_escape_string($pageId);
 		$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
 		$query = $this->kobros->db->query($sql);
 		$news = array();
@@ -78,8 +78,9 @@ class Module_News extends Module
 		$view = new View();
 		$view->item = $news[0];
 		
-		$comments = array();
-		$query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
+                $comments = array();
+            
+              $query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
 		while($res = $query->fetch(PDO::FETCH_OBJ)) {
 			$comments[] = $res;
 		}
@@ -112,7 +113,7 @@ class Module_News extends Module
 		
 		$now = new DateTime();
 		$now = $now->format('Y-m-d H:i:s');
-		
+                
 		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->kobros->db->prepare($sql);
 		
