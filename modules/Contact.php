@@ -88,16 +88,26 @@ class Module_Contact extends Module
 			return $view->render(ROOT . '/templates/data/contact/default.phtml');
 		} else {
 
-			// mailer and redirect be here
-			
-			$mail = new Mailer($_POST['from'], $contact->mail_to, $contact->mail_subject, $_POST['message']);
-			$mail->send();
+                        // HAl: Swiftmailer taken into use
+                        
+                        $transport = Swift_SmtpTransport::newInstance('localhost', 25);
+                        
+                        $mailer = Swift_Mailer::newInstance($transport);
 
+                        $message = Swift_Message::newInstance();
+                        $message->setSubject($contact->mail_subject);
+                        $mailFrom = array($_POST['from']);
+                        $message->setFrom($mailFrom);
+                        $message->setBody($_POST['message']);
+                        $message->setTo($contact->mail_to);
+                        
+                        $result = $mailer->send($message); 
+			
 			// If we has forward field, we forward there. Otherwise
 			// we be using dem internal thanx page!1!
 			
 			if(isset($_POST['forward']) && $_POST['forward']) {
-                $forwardTo = "Location: {$_POST['forward']}";                			    
+                            $forwardTo = "Location: {$_POST['forward']}";                			    
 			} else {
 			    $forwardTo = "Location: /?page={$this->kobros->page->id}&action=thanks";
 			}

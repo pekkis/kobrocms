@@ -11,6 +11,8 @@
 $root = realpath(dirname(__FILE__));
 define('ROOT', $root);
 
+require_once(__DIR__ . '/../vendor/autoload.php');
+
 // Add secret devel parameter to query string for devel info.
 /*
  * HAl: Removed way to reveal phpinfo
