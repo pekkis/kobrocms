@@ -38,9 +38,15 @@ class Module_User extends Module
                 //Prepare and execute
                 //$sql = "SELECT * FROM user WHERE login = '{$login}' AND password = '{$pass}'";
                 $login= $this->kobros->db->quote($params['login']); 
-                $pass = $this->kobros->db->quote($params['password']); 
+                $pass = $this->kobros->db->quote($params['password']);
                 
-                $sql = $this->kobros->db->prepare("SELECT * FROM user WHERE login = {$login} AND password = {$pass}");
+                //Simple salt & password in hash (Sha256)
+                $salt = 'haxor'; 
+                $realpass = hash('sha256',$salt.$pass);
+                $realpass = $this->kobros->db->quote($realpass);
+                //echo($realpass);
+                
+                $sql = $this->kobros->db->prepare("SELECT * FROM user WHERE login = {$login} AND password = {$realpass}");
                 $sql->execute(); 
                 
                 $res = $sql->fetchObject();

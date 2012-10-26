@@ -49,7 +49,7 @@ class Module_Employ extends Module
 			// It must be uploaded file to move'n groove. We be moving the uploaded file outside root for security of course stupid!
               
 			move_uploaded_file($cv['tmp_name'], $this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']);
-                        echo(pathinfo($cv['name'], PATHINFO_EXTENSION));
+                        //echo(pathinfo($cv['name'], PATHINFO_EXTENSION));
                         
                         //To be sure, lets check mime content type
                         //Tää on kyllä niin järjestöntä että huh.... 
