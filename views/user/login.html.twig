@@ -1,0 +1,28 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Login{% endblock %}
+{% block content%}
+<div class="post">
+    <div class="entry">
+        <h2>Login</h2>
+        {# Display if not logged in #}
+        <form method="post" action="">
+            {% if error %}
+            <p class="error">
+                {{ error }}
+            </p>
+            {% endif %}
+            <label>Login</label>
+            <input type="text" name="login" />
+            <label>Password</label>
+            <input type="password" name="password" />
+            <button type="submit">Login</button>
+        </form>
+        {# Display if user is logged in #}
+        <p>
+            You are already logged in, oh big one.
+        </p>
+        <a href="">Logout</a>
+    </div>
+</div>
+{% endblock %}

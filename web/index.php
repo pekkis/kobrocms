@@ -193,4 +193,11 @@ $app->post('/search', function() use($app) {
 })
 ->bind('search');
 
+$app->get('/user/login', function() use($app) {
+   return $app['twig']->render('user/login.html.twig', array(
+       'error' => false
+   )); 
+})
+->bind('user.login');
+
 $app->run();
