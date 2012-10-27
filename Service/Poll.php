@@ -1,17 +1,19 @@
 <?php
 namespace Service;
 
+use Doctrine\DBAL\Connection;
+
 class Poll {
     
     /**
-     * @var \PDO
+     * @var Connection
      */
     private $db;
     
     /**
-     * @param \PDO $db
+     * @param \Doctrine\DBAL\Connection $db
      */
-    public function __construct(\PDO $db) {
+    public function __construct(Connection $db) {
         $this->db = $db;
     }
     
@@ -20,8 +22,10 @@ class Poll {
      * @return array
      */
     public function getQuestion($id) {
-		$query = $this->db->query("SELECT * FROM question WHERE id = {$id}");
-		return $query->fetch();
+		$stmt = $this->db->executeQuery("SELECT * FROM question WHERE id = :id", array(
+            'id' => $id
+        ));
+		return $stmt->fetch();
     }
     
     /**
@@ -29,8 +33,10 @@ class Poll {
      * @return array
      */
     public function getAnswers($id) {
-		$query = $this->db->query("SELECT * FROM answer WHERE question_id = {$id}");
-		return $query->fetchAll();
+		$stmt = $this->db->executeQuery("SELECT * FROM answer WHERE question_id = :id", array(
+            'id' => $id
+        ));
+		return $stmt->fetchAll();
     }
     
     /**
@@ -38,7 +44,10 @@ class Poll {
      * @param integer $answerId
      */
     public function vote($questionId, $answerId) {
-        $sql = "UPDATE answer SET votes = votes + 1 WHERE question_id = {$questionId} AND id = {$answerId}";
-		$this->db->exec($sql);
+        $sql = "UPDATE answer SET votes = votes + 1 WHERE question_id = :questionId AND id = :answerId";
+		$this->db->executeQuery($sql, array(
+            'questionId' => $questionId,
+            'answerId' => $answerId
+        ));
     }
 }

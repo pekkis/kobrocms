@@ -5,6 +5,7 @@ $autoloader->add('Service', __DIR__.'/../');
 
 $app = new Silex\Application();
 $app['debug'] = true;
+$app['config'] = parse_ini_file(__DIR__ . "/../config/config.ini");
 
 // Register providers
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -15,13 +16,18 @@ $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app['swiftmailer.options'] = array(
     'host' => 'smtp.metropolia.fi',
 );
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver' => 'pdo_mysql',
+        'host' => $app['config']['db_host'],
+        'user' => $app['config']['db_user'],
+        'password' => $app['config']['db_password'],
+        'password' => $app['config']['db_password'],
+        'dbname' => $app['config']['db_schema']
+    ),
+));
 
 // Configure DI
-$app['config'] = parse_ini_file(__DIR__ . "/../config/config.ini");
-$app['db'] = $app->share(function() use($app) {
-    return new PDO("mysql:host={$app['config']['db_host']};dbname={$app['config']['db_schema']}", 
-            $app['config']['db_user'], $app['config']['db_password']);
-});
 $app['service.news'] = $app->share(function() use($app) {
     return new Service\News($app['db']);
 });

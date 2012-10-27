@@ -1,17 +1,19 @@
 <?php
 namespace Service;
 
+use Doctrine\DBAL\Connection;
+
 class Html {
     
     /**
-     * @var \PDO
+     * @var Connection
      */
     private $db;
     
     /**
-     * @param \PDO $db
+     * @param \Doctrine\DBAL\Connection $db
      */
-    public function __construct(\PDO $db) {
+    public function __construct(Connection $db) {
         $this->db = $db;
     }
     
@@ -19,7 +21,7 @@ class Html {
      * @return string
      */
     public function getHome() {
-        $stmt = $this->db->query("SELECT content FROM html WHERE block_id = 1 AND page_id = 1");
+        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 1');
         return $stmt->fetchColumn();
     }
     
@@ -27,21 +29,23 @@ class Html {
      * @param string $content
      */
     public function saveHome($content) {
-        $sql = "UPDATE html SET content = ? WHERE page_id = ? AND block_id = ?";
-		$stmt = $this->db->prepare($sql);
-		
-		$stmt->execute(array($content, 1, 1));
+		$this->db->update(
+                'html', 
+                array('content' => $content), 
+                array('page_id' => 1, 'block_id' => 1)
+        );
     }
     
     public function getAbout() {
-        $stmt = $this->db->query("SELECT content FROM html WHERE block_id = 1 AND page_id = 2");
+        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 2');
         return $stmt->fetchColumn();
     }
     
     public function saveAbout($content) {
-        $sql = "UPDATE html SET content = ? WHERE page_id = ? AND block_id = ?";
-		$stmt = $this->db->prepare($sql);
-		
-		$stmt->execute(array($content, 2, 1));
+		$this->db->update(
+                'html', 
+                array('content' => $content), 
+                array('page_id' => 2, 'block_id' => 1)
+        );
     }
 }

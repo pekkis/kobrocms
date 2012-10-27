@@ -1,14 +1,19 @@
 <?php
 namespace Service;
 
+use Doctrine\DBAL\Connection;
+
 class News {
     
     /**
-     * @var \PDO 
+     * @var Connection
      */
     private $db;
     
-    public function __construct(\PDO $db) {
+    /**
+     * @param \Doctrine\DBAL\Connection $db
+     */
+    public function __construct(Connection $db) {
         $this->db = $db;
     }
 	
@@ -17,11 +22,11 @@ class News {
      */
 	public function getHeadlines($limit)
 	{
-		$sql = "SELECT * FROM news ORDER BY created DESC LIMIT {$limit}";
-		$query = $this->db->query($sql);
+		$sql = 'SELECT * FROM news ORDER BY created DESC LIMIT :limit';
+		$stmt = $this->db->executeQuery($sql, array('limit' => (int) $limit), array('limit' => 1));
         
 		$news = array();
-		while ($res = $query->fetch()) {
+		while ($res = $stmt->fetch()) {
 			$news[] = $res; 
 		}
         
@@ -34,7 +39,7 @@ class News {
      */
 	public function getAllNews()
 	{
-		$stmt = $this->db->query("SELECT * FROM news");
+		$stmt = $this->db->query('SELECT * FROM news');
         return $stmt->fetchAll();
 	}	
 	
@@ -45,11 +50,11 @@ class News {
      */
 	public function getNewsById($id)
 	{
-		if ($query = $this->db->query("SELECT * FROM news WHERE id = {$id}")) {
-            return $news = $query->fetch();
-        } else {
-            throw new \Exception('No news be here');
-        }
+        $stmt = $this->db->executeQuery('SELECT * FROM news WHERE id = :id', array(
+            'id' => $id
+        ));
+        
+        return $stmt->fetch();
 	}
     
     /**
@@ -57,9 +62,12 @@ class News {
      * @return array|null
      */
     public function getNewsComments($newsId) {
-        if ($query = $this->db->query("SELECT * FROM news_comments WHERE news_id = {$newsId} ORDER BY created DESC")) {
-            return $query->fetchAll();
-        }
+        $sql = 'SELECT * FROM news_comments WHERE news_id = :newsId ORDER BY created DESC';
+        $stmt = $this->db->executeQuery($sql, array(
+           'newsId' => $newsId 
+        ));
+        
+        return $stmt->fetchAll();
     }
 	
 	
@@ -67,11 +75,15 @@ class News {
 	{
         // assert that news exists with given id
 		$news = $this->getNewsById($newsId);
+        
+        if (!$news) {
+            throw new \InvalidArgumentException('No news exists with given id');
+        }
 
 		$now = new \DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 		
-		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
+		$sql = 'INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)';
 		$stmt = $this->db->prepare($sql);
 		
 		$stmt->execute(array($newsId, $comment, $now));
