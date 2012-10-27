@@ -61,14 +61,25 @@ $app->post('/home/save', function() use ($app) {
 ->bind('home.save');
 
 $app->get('/about', function() use ($app) {
-    $stmt = $app['db']->query("SELECT content FROM html WHERE block_id = 1 AND page_id = 2");
-    $content = $stmt->fetchColumn();
-    
-    return $app['twig']->render('about.html.twig', array (
-        'content' => $content
+    return $app['twig']->render('about/default.html.twig', array (
+        'content' => $app['service.html']->getAbout()
     ));     
 })
 ->bind('about');
+
+$app->get('/about/edit', function() use ($app) {
+    return $app['twig']->render('/about/edit.html.twig', array (
+        'content' => $app['service.html']->getAbout()
+    ));
+})
+->bind('about.edit');
+
+$app->post('/about/save', function() use ($app) {
+    $app['service.html']->saveAbout($app['request']->get('content'));
+    
+    return $app->redirect($app['url_generator']->generate('about.edit'));
+})
+->bind('about.save');
 
 $app->get('/news', function() use ($app) {
     $news = $app['service.news']->getAllNews();
