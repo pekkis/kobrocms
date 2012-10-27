@@ -25,7 +25,13 @@ class Poll {
 		$stmt = $this->db->executeQuery("SELECT * FROM question WHERE id = :id", array(
             'id' => $id
         ));
-		return $stmt->fetch();
+        $question = $stmt->fetch();
+        
+        if (!$question) {
+            throw new \InvalidArgumentException('Question with given id does not exists');
+        }
+        
+        return $question;
     }
     
     /**
