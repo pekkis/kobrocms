@@ -53,8 +53,13 @@ class News {
         $stmt = $this->db->executeQuery('SELECT * FROM news WHERE id = :id', array(
             'id' => $id
         ));
+        $news = $stmt->fetch();
         
-        return $stmt->fetch();
+        if (!$news) {
+            throw new \InvalidArgumentException('No news exists with given id');
+        }
+        
+        return $news;
 	}
     
     /**
@@ -74,11 +79,7 @@ class News {
 	public function addCommentToNews($newsId, $comment)
 	{
         // assert that news exists with given id
-		$news = $this->getNewsById($newsId);
-        
-        if (!$news) {
-            throw new \InvalidArgumentException('No news exists with given id');
-        }
+		$this->getNewsById($newsId);
 
 		$now = new \DateTime();
 		$now = $now->format('Y-m-d H:i:s');
