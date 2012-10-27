@@ -12,10 +12,6 @@ class Employ {
             return false;
         }
         
-        if (strtolower($file->getExtension()) !== 'pdf') {
-            return false;
-        }
-        
         $finfo = new \finfo(FILEINFO_MIME);
         if ($finfo->file($file) !== 'application/pdf; charset=binary') {
             return false;
