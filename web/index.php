@@ -46,7 +46,7 @@ $app['service.html'] = $app->share(function() use($app) {
 
 // Configure routes
 $app->get('/', function() use ($app) {
-    return $app['twig']->render('home.html.twig', array (
+    return $app['twig']->render('home/default.html.twig', array (
         'content' => $app['service.html']->getHome()
     ));
 })
