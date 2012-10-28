@@ -43,6 +43,13 @@ $app['security.firewalls'] = array(
         }),
     )
 );
+        
+$app['security.access_rules'] = array(
+    array('^/home/save', 'ROLE_ADMIN'),
+    array('^/home/edit', 'ROLE_ADMIN'),
+    array('^/about/save', 'ROLE_ADMIN'),
+    array('^/about/edit', 'ROLE_ADMIN')
+);
 
 // Configure DI
 $app['service.news'] = $app->share(function() use($app) {
