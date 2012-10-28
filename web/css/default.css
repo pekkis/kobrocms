@@ -63,7 +63,7 @@ img.right {
 	width: 1000px;
 	margin: 0 auto;
 	height: 150px;
-	background: url(images/img02.jpg) repeat-x left top;
+	background: url('/images/img02.jpg') repeat-x left top;
 	position: relative;
 }
 
@@ -74,7 +74,7 @@ img.right {
 	height: 100px;
 	margin: 0 auto;
 	padding: 0 10px 0 70px;
-	background: url(images/img01.jpg) no-repeat left top;
+	background: url('/images/img01.jpg') no-repeat left top;
 
 }
 
@@ -124,7 +124,7 @@ img.right {
 	margin: 0 auto;
 	padding: 0;
 	height: 50px;
-	background: url(images/img02.jpg) no-repeat left top;
+	background: url('/images/img02.jpg') no-repeat left top;
 }
 
 #menu ul {
@@ -145,7 +145,7 @@ img.right {
 	padding: 18px 30px 0 30px;
 	text-decoration: none;
 	text-transform: capitalize;
-	background: url(images/img03.jpg) no-repeat right top;
+	background: url('/images/img03.jpg') no-repeat right top;
 	dfont-family: Georgia, "Times New Roman", Times, serif;
 	font-family: tahoma, arial, sans-serif;
 	font-size: 12px;
@@ -286,7 +286,7 @@ img.right {
 	height: 30px;
 	margin: 0 0 0 0;
 	padding: 10px 15px 0px 15px;
-	background: #890208 url(images/img05.jpg) no-repeat left top;
+	background: #890208 url('/images/img05.jpg') no-repeat left top;
 	letter-spacing: -1px;
 	font-size: 16px;
 	color: #FFFFFF;
@@ -379,7 +379,7 @@ img.right {
 	height: 70px;
 	margin: 0 auto;
 	padding: 0 20px;
-	background: url(images/img04.jpg) no-repeat left top;
+	background: url('/images/img04.jpg') no-repeat left top;
 }
 
 #footer p {
