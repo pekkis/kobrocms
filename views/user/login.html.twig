@@ -5,7 +5,7 @@
 <div class="post">
     <div class="entry">
         <h2>Login</h2>
-        {# Display if not logged in #}
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
         <form method="post" action="{{ path('user_login_check') }}">
             <p class="error">
                 {{ error }}
@@ -16,11 +16,12 @@
             <input type="password" name="_password" />
             <button type="submit">Login</button>
         </form>
-        {# Display if user is logged in #}
+        {% else %}
         <p>
             You are already logged in, oh big one.
         </p>
-        <a href="">Logout</a>
+        <a href="{{ path('user_logout') }}">Logout</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

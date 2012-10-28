@@ -35,7 +35,6 @@ $app['security.firewalls'] = array(
     'login' => array(
         'anonymous' => true,
         'pattern' => '^.*$',
-        // Check path must be at the secured area
         'form' => array('login_path' => '/user/login', 'check_path' => '/user/login/check'),
         'logout' => array('logout_path' => '/user/logout'),
         'users' => $app->share(function() use ($app) {
