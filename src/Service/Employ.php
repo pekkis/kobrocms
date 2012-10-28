@@ -17,7 +17,7 @@ class Employ {
             return false;
         }
         
-        $file->move(__DIR__ . '/../upload', $file->getClientOriginalName());
+        $file->move(__DIR__ . '/../../upload', $file->getClientOriginalName());
         
         return true;
     }
