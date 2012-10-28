@@ -9,10 +9,11 @@
             {{ content }}
         {% endautoescape %}
             
-        {# Only for admin #}
+        {% if is_granted('ROLE_ADMIN') %}
         <p class="forAdmin">
             <a href="javascript:popupper('{{ path('home.edit') }}', 'html_edit');" class="html_edit">Edit</a>
         </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
