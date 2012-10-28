@@ -2,6 +2,9 @@
 
 $autoloader = require_once __DIR__.'/../vendor/autoload.php';
 $autoloader->add('Service', __DIR__.'/../');
+$autoloader->add('Security', __DIR__.'/../');
+
+use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application();
 $app['debug'] = true;
@@ -26,6 +29,20 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'dbname' => $app['config']['db_schema']
     ),
 ));
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\SecurityServiceProvider());
+$app['security.firewalls'] = array(
+    'login' => array(
+        'anonymous' => true,
+        'pattern' => '^.*$',
+        // Check path must be at the secured area
+        'form' => array('login_path' => '/user/login', 'check_path' => '/user/login/check'),
+        'logout' => array('logout_path' => '/user/logout'),
+        'users' => $app->share(function() use ($app) {
+            return new Security\UserProvider($app['db']);
+        }),
+    )
+);
 
 // Configure DI
 $app['service.news'] = $app->share(function() use($app) {
@@ -193,9 +210,9 @@ $app->post('/search', function() use($app) {
 })
 ->bind('search');
 
-$app->get('/user/login', function() use($app) {
+$app->get('/user/login', function(Request $request) use($app) {
    return $app['twig']->render('user/login.html.twig', array(
-       'error' => false
+       'error' => $app['security.last_error']($request)
    )); 
 })
 ->bind('user.login');

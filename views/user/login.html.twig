@@ -6,16 +6,14 @@
     <div class="entry">
         <h2>Login</h2>
         {# Display if not logged in #}
-        <form method="post" action="">
-            {% if error %}
+        <form method="post" action="{{ path('user_login_check') }}">
             <p class="error">
                 {{ error }}
             </p>
-            {% endif %}
             <label>Login</label>
-            <input type="text" name="login" />
+            <input type="text" name="_username" />
             <label>Password</label>
-            <input type="password" name="password" />
+            <input type="password" name="_password" />
             <button type="submit">Login</button>
         </form>
         {# Display if user is logged in #}
