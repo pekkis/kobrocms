@@ -32,11 +32,18 @@
 	</div>
 
 	<div id="userinfo">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="{{ path('user_logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ path('user.login') }}">Login</a>
-            {% endif %}
+        Hello, <strong>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {{ app.security.token.user.username }}
+        {% else %}
+            anonymous
+        {% endif%}
+        </strong><br>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('user_logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ path('user.login') }}">Login</a>
+        {% endif %}
 	</div>
 	
 </div>
