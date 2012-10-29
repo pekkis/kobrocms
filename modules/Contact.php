@@ -74,24 +74,19 @@ class Module_Contact extends Module
 				$error = true;
 			}
 		}
-
 		
 		if($error) {
 			// We has error, render default wid error!
 			$view = new View();
 			$view->error = true;
-			$view->page = $this->kobros->page;
-			
-			
-			$view->contact = $contact;
-			
+			$view->page = $this->kobros->page;			
+			$view->contact = $contact;			
 			return $view->render(ROOT . '/templates/data/contact/default.phtml');
 		} else {
 
                         // HAl: Swiftmailer taken into use
                         
                         $transport = Swift_SmtpTransport::newInstance('localhost', 25);
-                        
                         $mailer = Swift_Mailer::newInstance($transport);
 
                         $message = Swift_Message::newInstance();
@@ -101,22 +96,29 @@ class Module_Contact extends Module
                         $message->setBody($_POST['message']);
                         $message->setTo($contact->mail_to);
                         
-                        $result = $mailer->send($message); 
-			
-			// If we has forward field, we forward there. Otherwise
-			// we be using dem internal thanx page!1!
-			
-			if(isset($_POST['forward']) && $_POST['forward']) {
-                            $forwardTo = "Location: {$_POST['forward']}";                			    
-			} else {
-			    $forwardTo = "Location: /?page={$this->kobros->page->id}&action=thanks";
-			}
+                        $result = $mailer->send($message);
+                        
+                        if ($result != FALSE) {
+                            // If we has forward field, we forward there. Otherwise
+                            // we be using dem internal thanx page!1!
 
-			header($forwardTo);			
+                            if(isset($_POST['forward']) && $_POST['forward']) {
+                                $forwardTo = "Location: {$_POST['forward']}";                			    
+                            } else {
+                                $forwardTo = "Location: /?page={$this->kobros->page->id}&action=thanks";
+                            }
 
+                            header($forwardTo);			
+                        }
+                        else {
+                            // We has error, render default wid error!
+                            $view = new View();
+                            $view->error = true;
+                            $view->page = $this->kobros->page;
+                            $view->contact = $contact;
+                            return $view->render(ROOT . '/templates/data/contact/default.phtml');
+                        }
 		}
-		
-		
 	}
 	
 	
