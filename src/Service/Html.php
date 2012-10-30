@@ -48,4 +48,12 @@ class Html {
                 array('page_id' => 2, 'block_id' => 1)
         );
     }
+    
+    /**
+     * @return string
+     */
+    public function getTermsOfUse() {
+        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 100');
+        return $stmt->fetchColumn();
+    }
 }

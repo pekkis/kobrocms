@@ -222,4 +222,11 @@ $app->get('/user/login', function(Request $request) use($app) {
 })
 ->bind('user.login');
 
+$app->get('/terms-of-use', function() use ($app) {
+    return $app['twig']->render('terms-of-use/default.html.twig', array (
+        'content' => $app['service.html']->getTermsOfUse()
+    ));
+})
+->bind('terms.of.use');
+
 return $app;
