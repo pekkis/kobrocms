@@ -56,4 +56,12 @@ class Html {
         $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 100');
         return $stmt->fetchColumn();
     }
+    
+    /**
+     * @return string
+     */
+    public function getPrivacyPolicy() {
+        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 99');
+        return $stmt->fetchColumn();
+    }
 }

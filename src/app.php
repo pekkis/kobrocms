@@ -229,4 +229,11 @@ $app->get('/terms-of-use', function() use ($app) {
 })
 ->bind('terms.of.use');
 
+$app->get('/privacy-policy', function() use ($app) {
+    return $app['twig']->render('privacy-policy/default.html.twig', array (
+        'content' => $app['service.html']->getPrivacyPolicy()
+    ));
+})
+->bind('privacy.policy');
+
 return $app;
