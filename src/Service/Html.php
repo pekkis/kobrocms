@@ -11,7 +11,7 @@ class Html {
     private $db;
     
     /**
-     * @param \Doctrine\DBAL\Connection $db
+     * @param Connection $db
      */
     public function __construct(Connection $db) {
         $this->db = $db;
@@ -21,7 +21,7 @@ class Html {
      * @return string
      */
     public function getHome() {
-        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 1');
+        $stmt = $this->db->query('SELECT content FROM html WHERE page_id = 1');
         return $stmt->fetchColumn();
     }
     
@@ -32,12 +32,12 @@ class Html {
 		$this->db->update(
                 'html', 
                 array('content' => $content), 
-                array('page_id' => 1, 'block_id' => 1)
+                array('page_id' => 1)
         );
     }
     
     public function getAbout() {
-        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 2');
+        $stmt = $this->db->query('SELECT content FROM html WHERE page_id = 2');
         return $stmt->fetchColumn();
     }
     
@@ -45,7 +45,7 @@ class Html {
 		$this->db->update(
                 'html', 
                 array('content' => $content), 
-                array('page_id' => 2, 'block_id' => 1)
+                array('page_id' => 2)
         );
     }
     
@@ -53,7 +53,7 @@ class Html {
      * @return string
      */
     public function getTermsOfUse() {
-        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 100');
+        $stmt = $this->db->query('SELECT content FROM html WHERE page_id = 100');
         return $stmt->fetchColumn();
     }
     
@@ -61,7 +61,7 @@ class Html {
      * @return string
      */
     public function getPrivacyPolicy() {
-        $stmt = $this->db->query('SELECT content FROM html WHERE block_id = 1 AND page_id = 99');
+        $stmt = $this->db->query('SELECT content FROM html WHERE page_id = 99');
         return $stmt->fetchColumn();
     }
 }
