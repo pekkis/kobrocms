@@ -45,9 +45,7 @@ $app->register(new Silex\Provider\TranslationServiceProvider());
 $app->register(new Silex\Provider\FormServiceProvider());
         
 $app['security.access_rules'] = array(
-    array('^/home/save', 'ROLE_ADMIN'),
     array('^/home/edit', 'ROLE_ADMIN'),
-    array('^/about/save', 'ROLE_ADMIN'),
     array('^/about/edit', 'ROLE_ADMIN')
 );
 
