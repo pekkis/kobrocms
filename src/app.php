@@ -67,6 +67,9 @@ $app['service.poll'] = $app->share(function() use($app) {
 $app['service.html'] = $app->share(function() use($app) {
     return new Service\Html($app['db']);
 });
+$app['service.form'] = $app->share(function() use($app) {
+    return new Service\Form($app['form.factory'], $app['service.html']);
+});
 
 // Configure routes
 $app->get('/', function() use ($app) {
@@ -77,13 +80,7 @@ $app->get('/', function() use ($app) {
 ->bind('home');
 
 $app->match('/home/edit', function(Request $request) use ($app) {
-    $data = array(
-        'content' => $app['service.html']->getHome(),
-    );
-
-    $form = $app['form.factory']->createBuilder('form', $data)
-        ->add('content', 'textarea')
-        ->getForm();
+    $form = $app['service.form']->createEditHomeForm();
     
     if ($request->getMethod() === 'POST') {
         $form->bind($request);
@@ -106,19 +103,22 @@ $app->get('/about', function() use ($app) {
 })
 ->bind('about');
 
-$app->get('/about/edit', function() use ($app) {
+$app->match('/about/edit', function(Request $request) use ($app) {
+    $form = $app['service.form']->createEditAboutForm();
+    
+    if ($request->getMethod() === 'POST') {
+        $form->bind($request);
+        
+        if ($form->isValid()) {
+            $app['service.html']->saveAbout($form->getData()['content']);
+        }
+    }
+    
     return $app['twig']->render('/about/edit.html.twig', array (
-        'content' => $app['service.html']->getAbout()
+        'form' => $form->createView(),
     ));
 })
 ->bind('about.edit');
-
-$app->post('/about/save', function() use ($app) {
-    $app['service.html']->saveAbout($app['request']->get('content'));
-    
-    return $app->redirect($app['url_generator']->generate('about.edit'));
-})
-->bind('about.save');
 
 $app->get('/news', function() use ($app) {
     $news = $app['service.news']->getAllNews();
