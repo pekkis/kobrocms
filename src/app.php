@@ -41,6 +41,8 @@ $app['security.firewalls'] = array(
         }),
     )
 );
+$app->register(new Silex\Provider\TranslationServiceProvider());
+$app->register(new Silex\Provider\FormServiceProvider());
         
 $app['security.access_rules'] = array(
     array('^/home/save', 'ROLE_ADMIN'),
@@ -74,19 +76,28 @@ $app->get('/', function() use ($app) {
 })
 ->bind('home');
 
-$app->get('/home/edit', function() use ($app) {
+$app->match('/home/edit', function(Request $request) use ($app) {
+    $data = array(
+        'content' => $app['service.html']->getHome(),
+    );
+
+    $form = $app['form.factory']->createBuilder('form', $data)
+        ->add('content', 'textarea')
+        ->getForm();
+    
+    if ($request->getMethod() === 'POST') {
+        $form->bind($request);
+        
+        if ($form->isValid()) {
+            $app['service.html']->saveHome($form->getData()['content']);
+        }
+    }
+    
     return $app['twig']->render('/home/edit.html.twig', array (
-        'content' => $app['service.html']->getHome()
+        'form' => $form->createView(),
     ));
 })
 ->bind('home.edit');
-
-$app->post('/home/save', function() use ($app) {
-    $app['service.html']->saveHome($app['request']->get('content'));
-    
-    return $app->redirect($app['url_generator']->generate('home.edit'));
-})
-->bind('home.save');
 
 $app->get('/about', function() use ($app) {
     return $app['twig']->render('about/default.html.twig', array (
