@@ -20,5 +20,11 @@
         "twig/twig": ">=1.2.0,<2.0-dev",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
         "swiftmailer/swiftmailer": "4.1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Security": "src/",
+            "Service": "src/"
+        }
     }
 }

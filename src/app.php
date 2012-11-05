@@ -1,8 +1,6 @@
 <?php
 
 $autoloader = require_once __DIR__.'/../vendor/autoload.php';
-$autoloader->add('Service', __DIR__);
-$autoloader->add('Security', __DIR__);
 
 use Symfony\Component\HttpFoundation\Request;
 
