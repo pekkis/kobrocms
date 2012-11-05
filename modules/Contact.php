@@ -21,9 +21,32 @@ class Module_Contact extends Module
 	{
 		$pageId = (int) $pageId;
 		
-		$contact = $this->kobros->db->query("SELECT * FROM contact where page_id = {$pageId}")->fetch(PDO::FETCH_OBJ); 
-		
-		return $contact;
+                try
+                   {
+                     $this->kobros->validator->validateId($pageId);
+                   }
+                   catch(Exception $e)
+                   {                     
+                     $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                     file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                     die();
+                   }
+                try
+                {
+                    
+                     $query = "SELECT * FROM contact where page_id = ?";
+                     $statement = $this->kobros->db->prepare($query);
+                     $parameters = array($pageId);
+                     if($statement->execute($parameters))
+                     {
+                       return $statement->fetch(PDO::FETCH_OBJ);
+                     } 
+                }
+                catch(PDOException $e)
+                {
+                        file_put_contents(ROOT.'/logs/PDOErrors', $e->getMessage(), FILE_APPEND); 
+                        die();
+                } 
 		
 	}
 	
@@ -52,10 +75,13 @@ class Module_Contact extends Module
 	
 	protected function _send($params)
 	{
-		// Hackster protection!
+		/*
+                // Hackster protection!
 		if(!isset($_SERVER['HTTP_REFERER']) || !preg_match("/http:\/\/{$_SERVER['HTTP_HOST']}/", $_SERVER['HTTP_REFERER'])) {
 			throw new Exception('Go away evil hacksta!');
 		}
+                 * 
+                 */
 		
 		$contact = $this->_getContact($params['page']);
 			
@@ -92,17 +118,12 @@ class Module_Contact extends Module
 			
 			$mail = new Mailer($_POST['from'], $contact->mail_to, $contact->mail_subject, $_POST['message']);
 			$mail->send();
+	
+                        $redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+                        $redirectHeader = "Location: {$redirect}";
+                        //file_put_contents(ROOT.'/logs/generalDebug', "functio logout:".$redirectHeader."\n", FILE_APPEND);
 
-			// If we has forward field, we forward there. Otherwise
-			// we be using dem internal thanx page!1!
-			
-			if(isset($_POST['forward']) && $_POST['forward']) {
-                $forwardTo = "Location: {$_POST['forward']}";                			    
-			} else {
-			    $forwardTo = "Location: /?page={$this->kobros->page->id}&action=thanks";
-			}
-
-			header($forwardTo);			
+                        header($redirectHeader);                        
 
 		}
 		

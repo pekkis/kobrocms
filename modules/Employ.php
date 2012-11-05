@@ -26,8 +26,10 @@ class Module_Employ extends Module
 			$error = true;
 		}
                 
+                
                 else 
                 {
+                    $cv = $_FILES['cv'];
                     // Tsekataan että file oikeasti on sitä mitä halutaan.
                     $finfo = finfo_open(FILEINFO_MIME_TYPE);
                     if(finfo_file($finfo, $cv['tmp_name']) != 'application/pdf')
@@ -46,7 +48,8 @@ class Module_Employ extends Module
 		} else {
 
 			// It must be uploaded file to move'n groove. We be moving the uploaded file outside root for security of course stupid! 
-			move_uploaded_file($cv['tmp_name'], $this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']);
+                        $filename = "userSubmittedPDF".date('d-m-Y')."_".date('H-i-s')."_".rand(1,1000).".pdf";
+			move_uploaded_file($cv['tmp_name'], ROOT.'/Data/uploaded/' . $filename);
 						
 			// Redirect to thanks so user can-not refresh dem sendings!
 			header("Location: /?page={$this->kobros->page->id}&action=thanks");			

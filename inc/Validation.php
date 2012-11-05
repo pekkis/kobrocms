@@ -2,6 +2,9 @@
 
 class Validator
 {
+
+  
+    
   public function validateUserOrPass($input)
   {
     if (!preg_match("/^[A-Za-z0-9-]{1,30}$/", $input))
@@ -15,22 +18,25 @@ class Validator
     }
   } 
 
-  public function validateEpithet($input)
+  public function validateTpl($input)
   {
-    if (!preg_match("/^[A-Za-z0-9-\s]{1,30}$/", $input))
+    if ($input == "default" || $input == "thanks" || $input == "edit"
+                            || $input == "headlines" || $input == "view" 
+                            || $input == "quicksearch" || $input == "search" 
+                            || $input == "front" || $input == "news" 
+                            || $input == "admin" || $input == "print")
     {
-      throw new Exception('Exception when validating type: Epithet. Value is: '.$input);
-    } 
+        return true;
+    }
     else
     {
-      //echo "Returning true<br>";
-      return true;
+        return false;
     }
   }
 
   public function validateId($input)
   {
-    if (!preg_match("/^[0-9]{1,4}$/", $input))
+    if (!preg_match("/^[0-9]{1,6}$/", $input))
     {
       throw new Exception('Exception when validating type: Id. Value is: '.$input);
     } 
@@ -41,11 +47,28 @@ class Validator
     }
   }
 
-  public function validateCommanderName($input)
+  public function validateEmailAddress($input)
   {
+   if (!filter_var($input, FILTER_VALIDATE_EMAIL))
+    {
+         echo "email";
+        throw new Exception('Exception when validating type: email. Value is: '.$input);
+    } 
+    else
+    {
+      //echo "Returning true<br>";
+      return true;
+    }
+
+  }
+  
+  public function validateEmailSubject($input)
+  {
+  
     if (!preg_match("/^[A-Za-z0-9-\s]{1,50}$/", $input))
     {
-      throw new Exception('Exception when validating type: commanderName. Value is: '.$input);
+         echo "emailsubject";
+        throw new Exception('Exception when validating type: emailSubjecte. Value is: '.$input);
     } 
     else
     {
@@ -54,148 +77,23 @@ class Validator
     }
   }
 
-  public function validateTerrainType($input)
+  public function validateEmailMessage($input)
   {
-  /*
-    if (!preg_match("/^[A-Za-z0-9-\s]{1,50}$/", $input))
+  
+    if (!preg_match("/^[A-Za-z0-9-\s]{1,500}$/", $input))
     {
-      echo "Returning false<br>";
-      return false;
+         echo "emailMessage";
+        throw new Exception('Exception when validating type: emailMessage. Value is: '.$input);
     } 
     else
     {
       //echo "Returning true<br>";
       return true;
     }
-   */
-    return true; // will be done later.
+   
   }
 
-  public function validateFilename($input)
-  {
-  /*
-    if (!preg_match("/^[A-Za-z0-9-\s]{1,50}$/", $input))
-    {
-      echo "Returning false<br>";
-      return false;
-    } 
-    else
-    {
-      //echo "Returning true<br>";
-      return true;
-    }
-   */
-    return true; // will be done later.
-  }
-  public function validateUnitType($input)
-  {
-    /*
-      // will be done later.
-    */
-    return true;
-  }
-  public function validateDirection($input)
-  {
-    /*
-      // will be done later.
-    */
-    return true;
-  }
-
-  public function validateUnitCount($input)
-  {
-    if (!preg_match("/^[0-9]{1,9}$/", $input))
-    {
-      throw new Exception('Exception when validating type: UnitCount. Value is: '.$input);
-    } 
-    else
-    {
-      //echo "Returning true<br>";
-      return true;
-    }
-  }
-
-  public function validateInitiative($input)
-  {
-    if (!preg_match("/^[0-9]{1,2}$/", $input))
-    {
-      throw new Exception('Exception when validating type: UnitCount. Value is: '.$input);
-    } 
-    else
-    {
-      //echo "Returning true<br>";
-      return true;
-    }
-  }
-
-public function validateTownName($input)
-{
-  if (!preg_match("/^[A-Za-z0-9-]{1,30}$/", $input))
-  {
-    echo "Returning false<br>";
-    return false;
-  } 
-  else
-  {
-    //echo "Returning true<br>";
-    return true;
-  }
-}  
-
-public function validateModifier($input)
-{
-/*
-  if (!preg_match("/^[A-Za-z0-9-]{1,30}$/", $input))
-  {
-    echo "Returning false<br>";
-    return false;
-  } 
-  else
-  {
-    //echo "Returning true<br>";
-    return true;
-  }
-  */
-  return true; // will be done later
-}
-
-public function validateActionType($input)
-{
-/*
-  if (!preg_match("/^[A-Za-z0-9-]{1,30}$/", $input))
-  {
-    echo "Returning false<br>";
-    return false;
-  } 
-  else
-  {
-    //echo "Returning true<br>";
-    return true;
-  }
-  */
-  return true; // will be done later
-
-}
-
-public function validateArmyOrTownType($input)
-{
-  // validates that input is either "town" or "army".
-/*
-  if (!preg_match("/^[A-Za-z0-9-]{1,30}$/", $input))
-  {
-    echo "Returning false<br>";
-    return false;
-  } 
-  else
-  {
-    //echo "Returning true<br>";
-    return true;
-  }
-  */
-  return true; // will be done later
-}
-
-    public function validateHash($input)
+ public function validateHash($input)
     {
         if (!preg_match("/^[A-Za-z0-9-]{20,100}$/", $input))
         {
@@ -206,6 +104,19 @@ public function validateArmyOrTownType($input)
           //echo "Returning true<br>";
           return true;
         }
+    }
+    public function validatePage1Forward($input)
+    {
+        if ($input == "/?page=1")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    
     }
 
 }

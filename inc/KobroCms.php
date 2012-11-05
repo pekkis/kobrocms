@@ -50,6 +50,9 @@ class KobroCms
          * 
          */
         public $validator;
+        
+        public $escaper;
+        
 	
 	private function __construct()
 	{
@@ -59,9 +62,10 @@ class KobroCms
 		// We connect to database
 		$this->db = new PDO("mysql:host={$this->config['db_host']};dbname={$this->config['db_schema']}", $this->config['db_user'], $this->config['db_password']);
 		$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                  
                 $this->validator = new Validator();
-                
-	}
+                $this->escaper = new Escaper();
+        }
 	
 	
 	
@@ -89,11 +93,35 @@ class KobroCms
 	 */
 	public function getPage($pageId)
 	{
-		// We be casting dem page id to integer so the parameter always valid.
-		$pageId = (int) $pageId;
-		
-		$sql = "SELECT * FROM page WHERE id = {$pageId}";
-		return $this->db->query($sql)->fetch(PDO::FETCH_OBJ);
+            // We be casting dem page id to integer so the parameter always valid.
+            $pageId = (int) $pageId;
+            try
+               {
+                 $this->validator->validateId($pageId);
+               }
+               catch(Exception $e)
+               {                     
+                 $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                 file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                 die();
+               }
+            try
+             {
+
+                 $query = "SELECT * FROM page WHERE id = ?";
+                 $statement = $this->db->prepare($query);
+                 $parameters = array($pageId);
+                 if($statement->execute($parameters))
+                 {
+                   return $statement->fetch(PDO::FETCH_OBJ);
+                 } 
+             }
+            catch(PDOException $e)
+            {
+                file_put_contents(ROOT.'/logs/PDOErrors', $e->getMessage(), FILE_APPEND); 
+                echo $e->getMessage();
+                die();
+            } 				
 	}
 	
 	
@@ -124,6 +152,12 @@ class KobroCms
 	 */
 	public function run()
 	{
+                if(isset($_REQUEST['s']))
+                {
+                    $_REQUEST['s'] = $this->escaper->escapeHtml($_REQUEST['s']);
+
+                }
+
 		// Init user
 		$this->user = User::getInstance();
 
@@ -140,10 +174,13 @@ class KobroCms
 		}
 		
 		// Render inner-template
+ 
 		$this->view->innertpl = $this->view->render(ROOT . '/templates/inner/' . $page->innertpl . '.phtml');
 		
 		// If user request template we use it
 		$tpl = (isset($_REQUEST['tpl'])) ? $_REQUEST['tpl'] : $page->tpl; 
+                //$message = "$tpl\n";
+                //file_put_contents(ROOT.'/logs/generalDebug', $message, FILE_APPEND);  
 		
 		// HTML TITLE is always page titel.
 		$this->view->title = $this->page->title;
@@ -156,8 +193,20 @@ class KobroCms
 			$this->view->includeAdminScripts = false;
 		}
 		
+                // ei tämmöstä:
 		// User can not go outside webroot so we fix the tpl param not to has goto up directory
-		$tpl = str_ireplace('../', '', $tpl);
+		//$tpl = str_ireplace('../', '', $tpl);
+                
+                try
+                   {
+                     $this->validator->validateTpl($tpl);
+                   }
+                   catch(Exception $e)
+                   {                     
+                     $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                     file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                     die();
+                   }
 		
 		// We render outer template, inject inner teplate to it
 		return $this->view->render(ROOT . '/templates/outer/' . $tpl . '.phtml');

@@ -8,7 +8,7 @@
 	<input type="hidden" name="page" value="<?php echo $this->page->id; ?>" />
 	<input type="hidden" name="action" value="search" />
 
-		<input type="text" name="s" id="s" size="15" value="<?php echo $this->s; ?>" />
+		<input type="text" name="s" id="s" size="15" value="<?php echo $this->kobros->escaper->escapeHtml($this->s); ?>" />
 		<input type="submit" value="Search" />
 		
 </form>

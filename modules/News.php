@@ -13,17 +13,40 @@ class Module_News extends Module
 	{
 		$limit = (int) $limit;
 		
-		// Be private method so no can call from module! Safe!
+                try
+                {
+                  $this->kobros->validator->validateId($pageId);
+                  $this->kobros->validator->validateId($limit);
+                }
+                catch(Exception $e)
+                {
+                  $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                  file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                  die();
+                }
+                try
+                {
+                    
+                     $query = "SELECT * FROM news WHERE page_id = ? ORDER BY created DESC LIMIT {$limit}";
+                     $statement = $this->kobros->db->prepare($query);
+                     $parameters = array($pageId);
+                     if($statement->execute($parameters))
+                     {
+                       	$news = array();
+                        while($res = $statement->fetch(PDO::FETCH_OBJ))
+                        {
+                            $news[] = $res; 
+                        }
+                     } 
+                } 
+                catch(PDOException $e)
+                {
+                    file_put_contents(ROOT.'/logs/PDOErrors', $e->getMessage(), FILE_APPEND); 
+                    die();
+                } 		
 		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
-		$query = $this->kobros->db->query($sql);
-		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
-			$news[] = $res; 
-		}
+                return $news;
 		
-		
-		return $news;
 
 	}
 	
@@ -63,27 +86,81 @@ class Module_News extends Module
 	{
 		$pageId = (int) $params['page'];
 		$itemId = (int) $params['id'];
-		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->kobros->db->query($sql);
-		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
-			$news[] = $res; 
-		}
-		
-		if(!sizeof($news)) {
-			throw new Exception('No news be here');
-		}
-						
+
+                
+                
+                try
+                {
+                  $this->kobros->validator->validateId($pageId);
+                  $this->kobros->validator->validateId($itemId);
+                }
+                catch(Exception $e)
+                {
+                  $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                  file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                  die();
+                }
+                try
+                {
+                    
+                     $query = "SELECT * FROM news WHERE page_id = ? AND id = ?";
+                     $statement = $this->kobros->db->prepare($query);
+                     $parameters = array($pageId, $itemId);
+                     if($statement->execute($parameters))
+                     {
+                       	$news = array();
+                        while($res = $statement->fetch(PDO::FETCH_OBJ))
+                        {
+                            $news[] = $res; 
+                        }
+                     } 
+                } 
+                catch(PDOException $e)
+                {
+                    file_put_contents(ROOT.'/logs/PDOErrors', $e->getMessage(), FILE_APPEND); 
+                    die();
+                }                
+
+                if(!sizeof($news)) {
+                        throw new Exception('No news be here');
+                }                
+			
 		$view = new View();
 		$view->item = $news[0];
 		
 		$comments = array();
-		$query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
-			$comments[] = $res;
-		}
-		
+                
+                
+                
+                try
+                {
+                  $this->kobros->validator->validateId($view->item->id);
+                }
+                catch(Exception $e)
+                {
+                  $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                  file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                  die();
+                }
+                try
+                {
+                    
+                     $query = "SELECT * FROM news_comments WHERE news_id = ? ORDER BY created DESC";
+                     $statement = $this->kobros->db->prepare($query);
+                     $parameters = array($view->item->id);
+                     if($statement->execute($parameters))
+                     {
+                        while($res = $statement->fetch(PDO::FETCH_OBJ))
+                        {
+                            $comments[] = $res; 
+                        }
+                     } 
+                } 
+                catch(PDOException $e)
+                {
+                    file_put_contents(ROOT.'/logs/PDOErrors', $e->getMessage(), FILE_APPEND); 
+                    die();
+                }                
 		$view->comments = $comments;
 				
 		return $view->render(ROOT . '/templates/data/news/view.phtml');
@@ -95,14 +172,40 @@ class Module_News extends Module
 	{
 				
 		$pageId = (int) $params['page'];
-		$itemId = (int) $params['id'];
-		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->kobros->db->query($sql);
-		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
-			$news[] = $res; 
-		}
+		$itemId = (int) $params['id'];                
+                $escapedComment = $this->kobros->escaper->escapeHtml($_POST['comment']);
+
+                try
+                {
+                  $this->kobros->validator->validateId($params['page']);
+                  $this->kobros->validator->validateId($params['id']);
+                }
+                catch(Exception $e)
+                {
+                  $message = "Method: ".__METHOD__." ".$e->getMessage()."\n";
+                  file_put_contents(ROOT.'/logs/ValidationErrors', $message, FILE_APPEND);   
+                  die();
+                }
+                try
+                {                    
+                     $query = "SELECT * FROM news WHERE page_id = ? AND id = ?";
+                     $statement = $this->kobros->db->prepare($query);
+                     $parameters = array($pageId, $itemId);
+                     if($statement->execute($parameters))
+                     {
+                        $news = array();
+                        while($res = $statement->fetch(PDO::FETCH_OBJ))
+                        {
+                            $news[] = $res; 
+                        }
+                     } 
+                } 
+                catch(PDOException $e)
+                {
+                    file_put_contents(ROOT.'/logs/PDOErrors', $e->getMessage(), FILE_APPEND); 
+                    die();
+                }                          
+
 		
 		if(!sizeof($news)) {
 			throw new Exception('No news be here');
@@ -116,11 +219,15 @@ class Module_News extends Module
 		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->kobros->db->prepare($sql);
 		
-		$stmt->execute(array($item->id, $_POST['comment'], $now));
+		$stmt->execute(array($item->id, $escapedComment, $now));
 
 		
 		
-		header("Location: {$_SERVER['HTTP_REFERER']}");
+		$redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+		$redirectHeader = "Location: {$redirect}";
+                //file_put_contents(ROOT.'/logs/generalDebug', "functio logout:".$redirectHeader."\n", FILE_APPEND);
+                
+		header($redirectHeader);
 		
 		
 		

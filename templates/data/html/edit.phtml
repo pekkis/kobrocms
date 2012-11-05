@@ -1,3 +1,4 @@
+<?php if($this->user->role == 'admin'): ?>
 <form method="post" action="/?page=<?php echo $this->html->page_id; ?>&amp;block_id=<?php echo $this->html->block_id; ?>&amp;action=save">
 
 <textarea style="width: 100%; height: 400px;" class="tiny" name="content">
@@ -7,4 +8,6 @@
 
 <button type="submit">Save</button>
 
+
 </form>
+<?php endif; ?>

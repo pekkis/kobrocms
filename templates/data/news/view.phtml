@@ -1,8 +1,8 @@
 <?php $item = $this->item; ?>
 
 <div class="post">
-		<h2 class="title"><?php echo $item->title; ?></h2>
-				<p class="byline"><small>Posted on <?php echo $item->created; ?> by admin</small></p>
+		<h2 class="title"><?php echo $this->kobros->escaper->escapeHtml($item->title); ?></h2>
+				<p class="byline"><small>Posted on <?php echo $this->kobros->escaper->escapeHtml($item->created); ?> by admin</small></p>
 				<div class="entry">
 					<?php echo $item->content; ?>
 				</div>
@@ -15,7 +15,7 @@
 
 <?php foreach($this->comments as $comment): ?>
 <p class="comment">
-<em><?php echo $comment->comment; ?> (<?php echo $comment->created; ?>)</em>
+<em><?php echo $comment->comment; ?> (<?php echo $this->kobros->escaper->escapeHtml($comment->created); ?>)</em>
 </p>
 <?php endforeach; ?>
 

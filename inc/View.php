@@ -46,6 +46,10 @@ class View
 	{
 		ob_start();
 		include $tpl;
+                //$templeitti = file_get_contents($tpl);
+                //file_put_contents(ROOT.'/logs/generalDebug', $templeitti);
+                
+                //$ret = "kalkkuna";
 		$ret = ob_get_clean();
 		
 		return $ret;
@@ -60,7 +64,8 @@ class View
 	 */
 	public function module($params)
 	{
-		$params = array_merge($_REQUEST, $params);
+		$params = array_merge($_GET, $params);
+                $params = array_merge($_POST, $params);
 		return $this->kobros->executeModule($params);
 	}
 	
