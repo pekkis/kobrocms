@@ -1,6 +1,8 @@
 <?php
 namespace Service;
 
+use Doctrine\DBAL\Connection;
+
 class Contact {
     
     /**
@@ -18,10 +20,14 @@ class Contact {
      */
     private $subject;
     
-    public function __construct(\Swift_Mailer $mailer, $sendMailsTo, $emailSubject) {
+    public function __construct(\Swift_Mailer $mailer, Connection $connection) {
         $this->mailer = $mailer;
-        $this->to = $sendMailsTo;
-        $this->subject = $emailSubject;
+        
+        $stmt = $connection->query('SELECT mail_to, mail_subject FROM contact WHERE id = 1');
+        $contact = $stmt->fetch();
+        
+        $this->to = $contact['mail_to'];
+        $this->subject = $contact['mail_subject'];
     }
     
     public function sendContact($fromEmail, $message) {

@@ -14,7 +14,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app['swiftmailer.options'] = array(
-    'host' => 'smtp.metropolia.fi',
+    'host' => $app['config']['smtp_host'],
 );
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
@@ -52,7 +52,7 @@ $app['service.news'] = $app->share(function() use($app) {
     return new Service\News($app['db']);
 });
 $app['service.contact'] = $app->share(function() use($app) {
-    return new Service\Contact($app['mailer'], $app['config']['contact_email'], 'Feedback from dem feedbacks form');
+    return new Service\Contact($app['mailer'], $app['db']);
 });
 $app['service.employ'] = $app->share(function() {
     return new Service\Employ();
