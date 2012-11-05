@@ -1,0 +1,14 @@
+Enable PHP's php_fileinfo module
+Enable SSL on your web server to increase security.
+Move the content of the .htaccess to Apache's virtual host config (if possible) to speed up the site.
+
+
+# MySQL
+mysql -uroot -e "CREATE DATABASE kobrocms;"
+mysql -uroot -e "CREATE USER 'kobrocms'@'localhost' IDENTIFIED BY 'kobrocms';"
+mysql -uroot -e "GRANT ALL ON kobrocms.* TO 'kobrocms'@'localhost';"
+
+
+# Default usernames and passwords
+admin:rootpassu
+user:userpassu
