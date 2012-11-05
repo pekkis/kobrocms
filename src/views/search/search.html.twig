@@ -1,0 +1,29 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}About Us{% endblock %}
+{% block content%}
+<div class="post">
+    <div class="entry">
+    <h2>Site Search</h2>
+    <form id="searchform" method="post" action="{{ path('search') }}">
+        <input type="text" name="s" id="s" size="15" value="{{ searchString }}" />
+        <input type="submit" value="Search" />
+    </form>
+    <h2>Your Results</h2>
+    <div id="searchresults">
+        <div class="result">
+            <h3><a href="#">Result</a></h3>
+            <em>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis consequat egestas. Nullam commodo ante id diam mattis lacinia. Praesent tristique feugiat scelerisque. Vestibulum id metus nec velit sodales tincidunt non at velit.
+            </em>
+        </div>
+        <div class="result">
+            <h3><a href="#">Result</a></h3>
+            <em>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis consequat egestas. Nullam commodo ante id diam mattis lacinia. Praesent tristique feugiat scelerisque. Vestibulum id metus nec velit sodales tincidunt non at velit.
+            </em>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

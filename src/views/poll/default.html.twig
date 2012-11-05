@@ -1,0 +1,14 @@
+<li>
+    <h2>Poll</h2>
+
+    <p>{{ question.question }}</p>
+
+    <ul>
+        {% for answer in answers %}
+        <li>
+            <a href="{{ path('poll.vote', {'questionId': question.id, 'answerId': answer.id}) }}">{{ answer.answer }}</a> ({{ answer.votes }})
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+

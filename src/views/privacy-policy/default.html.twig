@@ -1,0 +1,12 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title%}Privacy Policy{% endblock %}
+{% block content%}
+<div class="post">
+    <div class="entry">
+        {% autoescape false %}
+            {{ content }}
+        {% endautoescape %}
+    </div>
+</div>
+{% endblock %}

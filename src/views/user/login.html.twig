@@ -1,0 +1,27 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Login{% endblock %}
+{% block content%}
+<div class="post">
+    <div class="entry">
+        <h2>Login</h2>
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <form method="post" action="{{ path('user_login_check') }}">
+            <p class="error">
+                {{ error }}
+            </p>
+            <label>Login</label>
+            <input type="text" name="_username" />
+            <label>Password</label>
+            <input type="password" name="_password" />
+            <button type="submit">Login</button>
+        </form>
+        {% else %}
+        <p>
+            You are already logged in, oh big one.
+        </p>
+        <a href="{{ path('user_logout') }}">Logout</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

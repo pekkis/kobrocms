@@ -1,0 +1,20 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title%}Welcome{% endblock %}
+{% block content%}
+<div class="flower"><img src="images/img06.jpg" alt="" width="510" height="250" /></div>
+<div class="post">
+    <div class="entry">
+        <a href="#" onclick="window.print();"><img style="float: right; margin-top: 4px;" src="/images/print.gif" /></a>
+        {% autoescape false %}
+            {{ content }}
+        {% endautoescape %}
+            
+        {% if is_granted('ROLE_ADMIN') %}
+        <p class="forAdmin">
+            <a href="javascript:popupper('{{ path('home.edit') }}', 'html_edit');" class="html_edit">Edit</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

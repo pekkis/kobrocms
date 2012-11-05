@@ -1,0 +1,18 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}About Us{% endblock %}
+{% block content%}
+<div class="post">
+    <div class="entry">
+        {% autoescape false %}
+            {{ content }}
+        {% endautoescape %}
+            
+        {% if is_granted('ROLE_ADMIN') %}
+        <p class="forAdmin">
+            <a href="javascript:popupper('{{ path('about.edit') }}', 'html_edit');" class="html_edit">Edit</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

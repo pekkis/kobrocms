@@ -1,0 +1,26 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Latest News{% endblock %}
+{% block content %}
+<div class="post">
+    <div class="entry">
+        <h2>Contact Us</h2>
+
+        <p>The Dr. Kobros Foundation would very much like to hear from you. Just fill this form and we'll call you back right away!</p>
+
+        {% if error %}
+        <p class="error">
+        You has check da bomb, there be error!
+        </p>
+        {% endif %}
+
+        <form action="{{ path('contact.send') }}" method="post">
+            <label for="from">Email</label>
+            <input type="text" id="from" name="from">
+            <label for="message">Message</label>
+            <textarea id="message" name="message"></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

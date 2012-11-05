@@ -1,0 +1,14 @@
+{% extends 'editlayout.html.twig' %}
+
+{% block title %}About Us{% endblock %}
+{% block content %}
+<form method="post" action="{{ path('about.edit') }}">
+    <div class="error">
+    {{ form_errors(form) }}
+    </div>
+    
+    {{ form_widget(form.content, { 'attr': {'class': 'tiny', 'style': 'height: 400px'} }) }} 
+    {{ form_widget(form._token) }}
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
