@@ -23,6 +23,7 @@ class User
 
 		session_name('KBRSESSIONID');
 		session_start();
+                setcookie(session_name(), session_id(),time()+28800);
 
 		if(!isset($_SESSION['user'])) {
 

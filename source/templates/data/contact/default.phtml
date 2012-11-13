@@ -11,11 +11,11 @@ You has check da bomb, there be error!
 </p>
 <?php endif; ?>
 
-<form action="/?page=<?php echo $this->page->id; ?>&amp;action=send" method="post">
+<form action="/?page=<?php echo htmlspecialchars($this->page->id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=send" method="post">
 
-<input type="hidden" name="to" value="<?php echo $this->contact->mail_to; ?>" />
-<input type="hidden" name="subject" value="<?php echo $this->contact->mail_subject; ?>" />
-<input type="hidden" name="forward" value="<?php echo $this->forward; ?>" />
+<input type="hidden" name="to" value="<?php echo htmlspecialchars($this->contact->mail_to, ENT_NOQUOTES, 'UTF-8'); ?>" />
+<input type="hidden" name="subject" value="<?php echo htmlspecialchars($this->contact->mail_subject, ENT_NOQUOTES, 'UTF-8'); ?>" />
+<input type="hidden" name="forward" value="<?php echo htmlspecialchars($this->forward, ENT_NOQUOTES, 'UTF-8'); ?>" />
 
 <label for="from">Email</label>
 <input type="text" id="from" name="from">

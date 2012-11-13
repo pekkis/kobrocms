@@ -19,7 +19,7 @@ Please check the form, there is an error.
 </p>
 <?php endif; ?>
 
-<form action="/?page=<?php echo $this->page->id; ?>&amp;action=send" method="post" enctype="multipart/form-data">
+<form action="/?page=<?php echo htmlspecialchars($this->page->id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=send" method="post" enctype="multipart/form-data">
 
 <label for="name">Name</label>
 <input type="text" id="name" name="name">

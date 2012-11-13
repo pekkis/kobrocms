@@ -129,9 +129,9 @@ class Module_News extends Module
 		
 		$sqlInsert = "INSERT INTO news_comments (news_id, comment, created) VALUES(:itemId, :comment, :now)";
 		$stmt = $this->kobros->db->prepare($sqlInsert);
-                $query->bindParam(":itemId", $itemId, PDO::PARAM_INT);
-                $query->bindParam(":comment", $_POST['comment'], PDO::PARAM_INT);
-                $query->bindParam(":now", $now, PDO::PARAM_INT);
+                $stmt->bindParam(":itemId", $itemId, PDO::PARAM_INT);
+                $stmt->bindParam(":comment", $_POST['comment']);
+                $stmt->bindParam(":now", $now);
 		$stmt->execute();
 		
 		header("Location: {$_SERVER['HTTP_REFERER']}");

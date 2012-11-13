@@ -6,7 +6,7 @@
 
 <?php if($this->user->role == 'anonymous'): ?>
 
-<form method="post" action="/?page=<?php echo $this->kobros->page->id; ?>&amp;action=login">
+<form method="post" action="/?page=<?php echo htmlspecialchars($this->kobros->page->id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=login">
 
 <?php if($this->error): ?>
 <p class="error">
@@ -30,7 +30,7 @@
 You are already logged in, oh big one.
 </p>
 
-<a href="/?page=<?php echo $this->kobros->page->id; ?>&amp;action=logout">Logout</a>
+<a href="/?page=<?php echo htmlspecialchars($this->kobros->page->id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=logout">Logout</a>
 
 <?php endif; ?>
 

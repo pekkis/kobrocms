@@ -59,11 +59,11 @@ class Module_Html extends Module
 		}
 
 		// We fetch all from da base.
-		$sql = "SELECT content FROM html WHERE block_id = :blockId AND page_id = :pageId";
+		$sql = "SELECT * FROM html WHERE block_id = :blockId AND page_id = :pageId";
                 $q = $this->kobros->db->prepare($sql);
                 $q->bindParam(":blockId", $params['block_id'], PDO::PARAM_INT);
                 $q->bindParam(":pageId", $page->id, PDO::PARAM_INT);
-                $q = $q->execute();
+                $q->execute();
 		
 		
 		// We put view
@@ -77,7 +77,7 @@ class Module_Html extends Module
 		
 		return $view->render(ROOT . '/templates/data/html/edit.phtml');
 		
-		// die();
+
 	}
 	
 	
@@ -90,10 +90,12 @@ class Module_Html extends Module
 	 */
 	public function _save($params)
 	{
+            $user = $this->kobros->user->obj;
+            if($user->role == 'admin') {
 		// We use prepared statement it be safe.
 		$sql = "UPDATE html SET content = :content WHERE page_id = :page AND block_id = :blockId";
 		$query = $this->kobros->db->prepare($sql);
-                $query->bindParam(":content", $params['content'], PDO::PARAM_INT);
+                $query->bindParam(":content", $params['content']);
                 $query->bindParam(":page", $params['page'], PDO::PARAM_INT);
                 $query->bindParam(":blockId", $params['block_id'], PDO::PARAM_INT);
                 $query->execute();
@@ -101,6 +103,7 @@ class Module_Html extends Module
 		
 		// After savings we go back to previous.
 		header("Location: {$_SERVER['HTTP_REFERER']}");
+            }
 		
 	}
 	

@@ -153,7 +153,11 @@ class KobroCms
 		}
 		
 		// User can not go outside webroot so we fix the tpl param not to has goto up directory
-		$tpl = str_ireplace('../', '', $tpl);
+                $whitelist = array('admin', 'default', 'print');
+
+                if (!in_array($tpl, $whitelist)) {
+                     throw new Exception('Page not found');
+                }
 		
 		// We render outer template, inject inner teplate to it
 		return $this->view->render(ROOT . '/templates/outer/' . $tpl . '.phtml');

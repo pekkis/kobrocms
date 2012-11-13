@@ -20,12 +20,15 @@ class Module_Employ extends Module
 	
 	protected function _send($params)
 	{
+            $finfo = new finfo(FILEINFO_MIME);
+            $mimeType = $finfo->file($_FILES['cv']['tmp_name']);
+
 		if(!isset($_FILES) || !$_FILES['cv']) {
 			$error = true;
 		} else {
 			$cv = $_FILES['cv'];
 			
-			if($cv['type'] != 'application/pdf') {
+			if($cv['type'] != 'application/pdf' || $mimeType != "application/pdf; charset=binary") {
 				// Sent cv Not a PDF file, abort!
 				$error = true;
 			}

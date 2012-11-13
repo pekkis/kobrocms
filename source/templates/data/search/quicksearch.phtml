@@ -1,6 +1,6 @@
 <form id="searchform" method="get" action="/">
 			
-	<input type="hidden" name="page" value="<?php echo $this->page; ?>" />
+    <input type="hidden" name="page" value="<?php echo htmlspecialchars($this->page, ENT_NOQUOTES, 'UTF-8'); ?>" />
 	<input type="hidden" name="action" value="search" />
 
 	<div>

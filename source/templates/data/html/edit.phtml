@@ -1,10 +1,12 @@
-<form method="post" action="/?page=<?php echo $this->html->page_id; ?>&amp;block_id=<?php echo $this->html->block_id; ?>&amp;action=save">
+<?php if($this->user->role == 'admin'): ?>
+
+<form method="post" action="/?page=<?php echo htmlspecialchars($this->html->page_id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;block_id=<?php echo htmlspecialchars($this->html->block_id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=save">
 
 <textarea style="width: 100%; height: 400px;" class="tiny" name="content">
-<?php echo $this->html->content; ?>
+<?php echo htmlspecialchars($this->html->content, ENT_NOQUOTES, 'UTF-8'); ?>
 </textarea>
-
 
 <button type="submit">Save</button>
 
 </form>
+<?php endif; ?>

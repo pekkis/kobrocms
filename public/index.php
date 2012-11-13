@@ -18,6 +18,7 @@ require_once ROOT . '/inc/User.php';
 require_once ROOT . '/inc/Module.php';
 require_once ROOT . '/inc/View.php';
 require_once ROOT . '/inc/Mailer.php';
+require_once '../vendor/autoload.php';
 
 
 /* Mighty KobroCMS be implemented with fantastic patterns! */

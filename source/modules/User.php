@@ -35,10 +35,14 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
+                if (!isset($params['password'])) {
+                    $params['password'] = null;
+                }
+                $password = hash('sha512', $params['password']);
 		$sql = "SELECT * FROM user WHERE login = :login AND password = :password";
 		$query = $this->kobros->db->prepare($sql);
-                $query->bindParam(":login", $params['login'], PDO::PARAM_INT);
-                $query->bindParam(":password", $params['password'], PDO::PARAM_INT);
+                $query->bindParam(":login", $params['login']);
+                $query->bindParam(":password", $password);;
                 $query->execute();
 		$res = $query->fetch(PDO::FETCH_OBJ);
 		
@@ -90,11 +94,15 @@ class Module_User extends Module
 			// We know dem referes. We can go back there.
 			$redirect = $_SERVER['HTTP_REFERER'];
 		} else {
-			$redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+			$redirect = 'https://' . $_SERVER['HTTP_HOST'] . '/';
 		}
+
+                session_destroy();
 
 		$redirectHeader = "Location: {$redirect}";
 		header($redirectHeader);
+   
+                
 	}
 	
 }

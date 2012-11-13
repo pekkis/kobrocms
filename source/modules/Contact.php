@@ -21,7 +21,7 @@ class Module_Contact extends Module
 	{
 		$pageId = (int) $pageId;
 		
-                $sql = "SELECT * FROM contact WHERE id = :pageId";
+                $sql = "SELECT * FROM contact WHERE page_id = :pageId";
                 $query = $this->kobros->db->prepare($sql);
                 $query->bindParam(":pageId", $pageId, PDO::PARAM_INT);
                 $query->execute();

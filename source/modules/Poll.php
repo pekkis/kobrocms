@@ -44,8 +44,11 @@ class Module_Poll extends Module
 	
 	protected function _vote($params)
 	{
-		$sql = "UPDATE answer SET votes = votes + 1 WHERE question_id = {$params['question_id']} AND id = {$params['answer_id']}";
-		$q = $this->kobros->db->exec($sql);
+		$sql = "UPDATE answer SET votes = votes + 1 WHERE question_id = :questionId AND id = :answerId";
+		$q = $this->kobros->db->prepare($sql);
+                $q->bindParam(":questionId", $params['question_id'], PDO::PARAM_INT);
+                $q->bindParam(":answerId", $params['answer_id'], PDO::PARAM_INT);
+                $q->execute();
 	    
 		$forward = $params['forward'];
 		header("Location: {$forward}");

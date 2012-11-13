@@ -5,10 +5,10 @@
 
 <form id="searchform" method="get" action="/">
 			
-	<input type="hidden" name="page" value="<?php echo $this->page->id; ?>" />
+    <input type="hidden" name="page" value="<?php echo htmlspecialchars($this->page->id, ENT_NOQUOTES, 'UTF-8'); ?>" />
 	<input type="hidden" name="action" value="search" />
 
-		<input type="text" name="s" id="s" size="15" value="<?php echo $this->s; ?>" />
+		<input type="text" name="s" id="s" size="15" value="<?php echo htmlspecialchars($this->s, ENT_NOQUOTES, 'UTF-8'); ?>" />
 		<input type="submit" value="Search" />
 		
 </form>
