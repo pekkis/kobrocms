@@ -1,0 +1,159 @@
+
+Nämä muutokset tehtiin 12.11 jälkeen. Aiemmin tehtyjä muutoksia ei ole kauheasti dokumentoitu, mutta melkein kaikki röörit on pyritty tukkimaan. CSRF:ää ei kuitenkaan ole toteutettu.
+
+Aiemmin tehty mm:
+* validaattori
+* korjattu login (ei voi injektoida)
+* uploadattujen filejen oikean filetyypin tarkistus tehdään tiedostosta itsestään
+* session_destroy logoutissa (mut pitäskö olla myös setcookie joka laittaisi expiroitumisen vaikka vuoteen 1971?)
+
+12.11.2012 jälkeen tehdyt muutokset:
+
+1. 
+index.php : poistettiin getTrace jottei vahingossakaan tulosteta stack tracea tuotantomoodissa
+
+2.
+index.php : 
+    siirrettiin require-komennot erilliseen tiedostoon pois public-kansiosta.
+    siirrettiin config.ini pois public-kansiosta.
+    siirrettiin kansiot inc, modules ja templates pois public-kansiosta.
+    
+
+
+3.
+includes.php:
+    tehtiin uusi kansio sessions
+    laitettiin includes.php:ssä ini_set:llä sessiot tallentumaan tänne.    
+    Jostain syystä eivät tallennu sinne kuitenkaan.
+    edit: muutettiin tallennuspaikka kobrocms.axis-of-evil -conffista ja nyt tallentuu tänne!
+    
+    
+4.
+user.php
+contact.php
+news.php
+html.php
+    redirect on nyt ainoastaan pääsivulle.
+    contactissa forward vaihdettiing redirectiin pääsivulle.
+    
+  
+5.
+html.php
+lisäättiin parametrisoitu PDO sekä validointi _default ja _edit-funktioihin.
+  
+6.
+edit.phtml
+    muutettiin niin että nyt näkyy formi vain jos user role == admin.
+    
+7.
+Poll.php
+    muutetiin PDO parametrisoiduksi sekä lisättiin validaatio käyttäjältä saatuihin parametreihin.
+    
+8.
+/etc/apache2/site-enabled/kobrocms.axisofevil...
+
+disabloitiin URL sessio ottamalla
+use only cookies = on
+use trans sid = off
+
+
+9.
+
+Muutettiin kaikki tietokantaqueryt käyttämään PDO:n parametrisoitua apia.
+
+kobroCms.php
+Contact.php
+Html.php Oli jo tehty aikaisemmin
+News.php(josqueryon "SELECT*FROMnews WHERE page_id= ? ORDER BY created DESCLIMIT{$limit}"niin eikö $limittiä voikoravata ?:lla???")
+Poll.php
+User.php
+
+10.
+
+/etc/apache2/sites-available/kobrocms.axis-if-evil.org
+Poistettiin apachen conffeista hakemistolistaus, eli ei voi mennä enää esim axisofevil.org/images/
+<Location />
+Options Indexes FollowSymlinks
+>>> Options FollowSymlinks
+</location>
+
+11.
+
+/etc/apache2/sites-enabled/kobrocms.axis-if-evil.org
+Poistettiin apachen conffeista expose_php. Nyt headereissa ei enää lue powered by apache5.3
+
+PHP_ADMIN_FLAG EXPOSE_PHP on -> off
+
+12.
+inc/view.php
+Moduulin kutsuminen viewissä käyttää nyt GETtiä POSTin sijaan.
+
+13.
+
+kobrocms.php
+
+$tpl-parametri validoidaan nyt. Validoinnissa katsotaan mätsääkö $tpl mitään templatefileä (.phtml). Eri vaihtoehdot manuaalisesti laitettu validaattoriin, joten jos sivustoa laajennettaisiin, alkaisi validaattori luultavasti itkeä.
+
+14.
+mailer.php
+sähköpostiosoite, subjecti ja message validoidaan. Tosin kahden rivinvaihdon validointia ei taida olla ;)
+
+15.
+
+koko projekti:
+tämä tehty aiemmin: $requestin käytöstä on luovuttu. 
+Ainoastaan kobrocms.php:ssä on $_request mutta sekin validoidaan 
+
+16.
+contact.php
+
+tämä tehty aiemmin: forward otettu pois käytöstä
+
+17.
+News.php
+
+Lisätty escapointi uutisten kommentointiin. Otetaan pois merkit: <, >, &, ", '
+
+
+18.
+config.ini
+
+Otettiin muuttuja safe_data pois kokonaan. Tätä käytetään file uploadissa.
+
+
+19. employ.php
+
+muutettiin uploadatun filen nimi sellaiseksi jota uploadaaja ei tiedä (siinä on uploadaamisen päivämäärä, kellonaika sekä random osa.)
+
+
+20. /etc/apache2/apache2.conf
+
+Lisättiin loppuun kaksi riviä:
+ServerSignature Off
+ServerTokens Prod
+
+nyt ei enää serverin versio näy virheilmoituksissa.
+
+
+21. Contact.php
+
+Otettiin hackstasuoja pois.
+
+22. Lisättiin SSL tuubin ohjeiden mukaan.
+*** Tämän jälkeen logini ei enää toimi! Mutta fixattiin myöhemmin ***
+
+
+23. Conffattiin kobrocms.https samanlaiseksi kuin kobrocms.axis-of-evil:
+
+use trans sid off
+use only cookies on
+Indexes pois locationin alta
+session save path projektin omaksi
+
+24.
+view.php
+SSL:n enabloinnin jälkeen ei toiminut logini enää. Vastauksena tälle mergetettiin $paramsssiin myös $_POST -muuttuja.
+
+25.
+kaikki .phtml -tiedostot:
+lisättiin escapointia moniin echotuksiin. Ei kaikkiin, ja tämä on aika vajavaista.

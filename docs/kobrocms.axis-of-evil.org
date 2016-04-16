@@ -1,0 +1,44 @@
+<VirtualHost *:80>
+        ServerAdmin admin@drkobros.com
+        DocumentRoot /var/www/kobrocms/public/
+        ServerName kobrocms.axis-of-evil.org
+
+        <Directory /var/www/kobrocms/public/>
+                AllowOverride None
+        </Directory>
+
+		<Location />
+		Options FollowSymlinks
+		</Location>
+
+		php_admin_value session.cache_expire 180
+		php_admin_value session.cookie_lifetime	0
+		php_admin_value session.cookie_path	"/"
+
+		php_admin_value session.referer_check none
+		php_admin_value session.save_handler files
+		php_admin_value session.save_path "/var/www/kobrocms/sessions" 
+		php_admin_value session.serialize_handler php
+		
+		php_admin_flag session.use_only_cookies on 
+		php_admin_flag session.cookie_secure off
+		
+		php_admin_flag session.use_trans_sid off
+		
+		php_admin_flag filter.enabled off
+		php_admin_value filter.default none
+		
+		php_admin_flag magic_quotes_gpc off
+		php_admin_flag magic_quotes_runtime off
+		
+		php_admin_flag expose_php off
+		
+		php_admin_flag display_errors on
+		php_admin_flag display_startup_errors on
+
+		# php 5.3 settings to emulate 5.2s security settings
+		php_admin_value request_order "GPC"
+		
+</VirtualHost>
+
+
