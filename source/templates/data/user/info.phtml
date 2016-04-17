@@ -1,0 +1,7 @@
+Hello, <strong><?php echo htmlspecialchars($this->user->login, ENT_NOQUOTES, 'UTF-8'); ?>.</strong>
+<br />
+<?php if($this->user->role == 'anonymous'): ?>
+<a href="?page=<?php echo htmlspecialchars($this->target, ENT_NOQUOTES, 'UTF-8'); ?>">Login</a>
+<?php else: ?>
+<a href="?page=<?php echo htmlspecialchars($this->target, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=logout">Logout</a>
+<?php endif; ?>

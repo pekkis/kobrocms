@@ -1,0 +1,13 @@
+<div class="post">
+<div class="entry">
+<?php echo $this->html; ?>
+
+<?php if($this->user->role == 'admin'): ?>
+<p class="forAdmin">
+    <a href="javascript:popupper('/?page=<?php echo htmlspecialchars($this->kobros->page->id, ENT_NOQUOTES, 'UTF-8'); ?>
+   &amp;action=edit&amp;block_id=<?php echo htmlspecialchars($this->block_id, ENT_NOQUOTES, 'UTF-8'); ?>
+   &amp;tpl=admin', 'html_edit');" class="html_edit" id="block_<?php echo htmlspecialchars($this->kobros->page->id, ENT_NOQUOTES, 'UTF-8'); ?>_<?php echo htmlspecialchars($this->block_id, ENT_NOQUOTES, 'UTF-8'); ?>">Edit</a>
+</p>
+<?php endif; ?>
+</div>
+</div>

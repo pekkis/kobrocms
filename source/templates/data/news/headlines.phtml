@@ -1,0 +1,12 @@
+<li>
+<h2>Latest News</h2>
+<ul>
+<?php foreach($this->news as $item): ?>
+    <li><a href="/?page=<?php echo htmlspecialchars($this->page_id, ENT_NOQUOTES, 'UTF-8'); ?>&amp;action=view&amp;id=<?php echo htmlspecialchars($item->id, ENT_NOQUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($item->title, ENT_NOQUOTES, 'UTF-8'); ?></a></li>
+<?php endforeach; ?>
+</ul>
+</li>
+
+<p class="entry">
+<a href="/?page=<?php echo htmlspecialchars($this->page_id, ENT_NOQUOTES, 'UTF-8'); ?>">More news &raquo;</a>
+</p>

@@ -1,0 +1,7 @@
+Moi Pekkis.
+
+Vaihdoimme Mysql:ssä root:in salasanan toiseen ja loimme uuden käyttäjän tätä projektia varten, jolle annoimme rajatut (grant) oikeudet.
+
+php.inissä otimme parista paikasta pois virheiden ilmoitukset, jotta ne ei näkyisi käyttäjälle tuotantoserverillä.
+
+pakotettu https laitettu.

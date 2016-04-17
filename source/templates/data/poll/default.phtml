@@ -1,0 +1,16 @@
+<li>
+<h2>Poll</h2>
+
+<p><?php echo htmlspecialchars($this->question->question, ENT_NOQUOTES, 'UTF-8'); ?></p>
+
+<ul>
+<?php foreach($this->answers as $answer): ?>
+<li>
+<a href="/?page=44&action=vote&question_id=<?php echo htmlspecialchars($this->question->id, ENT_NOQUOTES, 'UTF-8'); ?>&answer_id=<?php echo htmlspecialchars($answer->id, ENT_NOQUOTES, 'UTF-8'); ?>&forward=<?php echo htmlspecialchars($this->forward, ENT_NOQUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($answer->answer, ENT_NOQUOTES, 'UTF-8'); ?></a> (<?php echo htmlspecialchars($answer->votes, ENT_NOQUOTES, 'UTF-8'); ?>)
+</li>
+<?php endforeach; ?>
+</ul>
+
+
+</li>
+

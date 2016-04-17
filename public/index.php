@@ -9,13 +9,8 @@
  *   
  */
 $root = realpath(dirname(__FILE__));
+$root = $root . '/../source';
 define('ROOT', $root);
-
-// Add secret devel parameter to query string for devel info.
-if(isset($_GET['g04753m135'])) {
-	phpinfo();
-	die();
-}
 
 // Require basic kobros klasses. Modules be using auto load so kobro cms very light!
 require_once ROOT . '/inc/KobroCms.php'; 
@@ -23,6 +18,7 @@ require_once ROOT . '/inc/User.php';
 require_once ROOT . '/inc/Module.php';
 require_once ROOT . '/inc/View.php';
 require_once ROOT . '/inc/Mailer.php';
+require_once '../vendor/autoload.php';
 
 
 /* Mighty KobroCMS be implemented with fantastic patterns! */

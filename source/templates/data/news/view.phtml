@@ -1,0 +1,29 @@
+<?php $item = $this->item; ?>
+
+<div class="post">
+    <h2 class="title"><?php echo htmlspecialchars($item->title, ENT_NOQUOTES, 'UTF-8'); ?></h2>
+				<p class="byline"><small>Posted on <?php echo htmlspecialchars($item->created, ENT_NOQUOTES, 'UTF-8'); ?> by admin</small></p>
+				<div class="entry">
+					<?php echo htmlspecialchars($item->content, ENT_NOQUOTES, 'UTF-8'); ?>
+				</div>
+			</div>
+
+<div class="post">
+    <div class="entry">
+
+        <h3>Comments</h3>
+
+        <?php foreach($this->comments as $comment): ?>
+        <p class="comment">
+            <em><?php echo htmlspecialchars($comment->comment, ENT_NOQUOTES, 'UTF-8'); ?> (<?php echo htmlspecialchars($comment->created, ENT_NOQUOTES, 'UTF-8'); ?>)</em>
+        </p>
+        <?php endforeach; ?>
+        <h3>Post a comment</h3>
+            <form method="post" action="/?page=<?php echo htmlspecialchars($this->kobros->page->id, ENT_NOQUOTES, 'UTF-8'); ?>&action=comment&amp;id=<?php echo htmlspecialchars($item->id, ENT_NOQUOTES, 'UTF-8'); ?>">
+                <textarea name="comment" id="comment">
+                    Your comment here
+                </textarea>
+                <button type="submit">Submit</button>
+            </form>
+    </div>
+</div>
