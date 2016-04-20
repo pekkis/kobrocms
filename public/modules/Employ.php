@@ -19,19 +19,23 @@ class Module_Employ extends Module
 	
 	
 	protected function _send($params)
-	{
-		if(!isset($_FILES) || !$_FILES['cv']) {
+	{                               
+		if(!isset($_FILES) || !$_FILES['cv']) { 
 			$error = true;
 		} else {
 			$cv = $_FILES['cv'];
-			
-			if($cv['type'] != 'application/pdf') {
+                                                          			
+			if($cv['type'] != 'application/pdf') {                            
 				// Sent cv Not a PDF file, abort!
-				$error = true;
+                            $error = true;
 			}
-			
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        if(finfo_file($finfo,$cv['tmp_name']) != 'application/pdf') {
+                            $error = true;
+                         finfo_close($finfo);
+                            }
 		}
-		
+                		
 		if($error) {
 			// We has error, render default wid error!
 			$view = new View();

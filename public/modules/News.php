@@ -113,14 +113,16 @@ class Module_News extends Module
 		$now = new DateTime();
 		$now = $now->format('Y-m-d H:i:s');
 		
+                $config = HTMLPurifier_Config::createDefault();
+                $purifier = new HTMLPurifier($config);
+                $dirty_html = strip_tags($_POST['comment']);
+                $clean_html = $purifier->purify($dirty_html);
+                
 		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->kobros->db->prepare($sql);
 		
-		$stmt->execute(array($item->id, $_POST['comment'], $now));
-
-		
-		
-		header("Location: {$_SERVER['HTTP_REFERER']}");
+		$stmt->execute(array($item->id,$clean_html, $now));
+                header("Location: {$_SERVER['HTTP_REFERER']}");
 		
 		
 		
