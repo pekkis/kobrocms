@@ -10,7 +10,7 @@ class Module_Search extends Module
 
 	protected function _quicksearch($params)
 	{
-		// Show dem search boks.
+		
 		
 		$page = $params['page'];
 				
@@ -24,7 +24,7 @@ class Module_Search extends Module
 	
 	protected function _search($params)
 	{
-		// @todo Dem actual search be missing on purpose!
+		
 		
 		$view = new View();
 		$view->page = $this->kobros->page;

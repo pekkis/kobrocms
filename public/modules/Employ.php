@@ -30,6 +30,12 @@ class Module_Employ extends Module
 				$error = true;
 			}
 			
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        if(finfo_file($finfo,$cv['tmp_name']) != 'application/pdf') {
+                               $error = true;
+                             finfo_close($finfo); 
+                        }
+                        
 		}
 		
 		if($error) {
