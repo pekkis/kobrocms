@@ -11,18 +11,26 @@
 $root = realpath(dirname(__FILE__));
 define('ROOT', $root);
 
+require_once(__DIR__ . '/../vendor/autoload.php');
+
 // Add secret devel parameter to query string for devel info.
+/*
+ * HAl: Removed way to reveal phpinfo
 if(isset($_GET['g04753m135'])) {
 	phpinfo();
 	die();
 }
+ * 
+ */
 
 // Require basic kobros klasses. Modules be using auto load so kobro cms very light!
-require_once ROOT . '/inc/KobroCms.php'; 
-require_once ROOT . '/inc/User.php';
-require_once ROOT . '/inc/Module.php';
-require_once ROOT . '/inc/View.php';
-require_once ROOT . '/inc/Mailer.php';
+// HAl: Modules moved outside of web scope
+require_once ROOT . '/../inc/KobroCms.php'; 
+require_once ROOT . '/../inc/User.php';
+require_once ROOT . '/../inc/Module.php';
+require_once ROOT . '/../inc/View.php';
+require_once ROOT . '/../inc/Mailer.php';
+require_once ROOT . '/../inc/BCrypt.php';
 
 
 /* Mighty KobroCMS be implemented with fantastic patterns! */
@@ -34,7 +42,8 @@ try {
 		
 	echo "<h1>KobroCMS Fatal Error</h1>";
 	
-	echo "<em>" . $e . "</em>";
+        // HAl: Do not reveal unnecessary information to end user
+	//echo "<em>" . $e . "</em>";
 
 	// We kobros developers be very clever: we hide stack trace from customer if not devel mode!
 	if($app->config['mode'] == 'development') {

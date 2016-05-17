@@ -35,14 +35,17 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
-		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
+                $bcrypt = new bCrypt(12);
+                        
+		$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
 		
 		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
-		
-		if($res) {
+                
+		if (($res != FALSE) && $bcrypt->verify("{$params['password']}", $res->password)) {
+                    
 			// We find user, we set dem sessions users. Rock on!
 			$_SESSION['user'] = $res;
+                        session_regenerate_id(TRUE);
 
 			// Redirect
 		
@@ -66,20 +69,22 @@ class Module_User extends Module
 			// We fail. Serve customer with nice error messages true kobro style!
 
 			// Define if user exist, give error message wrong password.
-			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
+/*			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
+
+                        if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
+                                $error = "Invalid password.";
 			} else {
 				// If user not exist he given other error.
 				$error = "User does not exist.";
 			}
+ */
+
+                        $error = "User identification failed.";
 			
 			$view = new View();
 			$view->error = $error;
 			$view->user = $_SESSION['user'];
 			return $view->render(ROOT . '/templates/data/user/default.phtml');	
-			
-			
 		
 		}
 		
@@ -90,7 +95,8 @@ class Module_User extends Module
 	protected function _logout($params)
 	{
 		// We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
-		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');		
+		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');
+                session_destroy();
 		
 		if($params['redirect']) {
 			// If we have param redirect we use dat to redirect.
