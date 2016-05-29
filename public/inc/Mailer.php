@@ -1,6 +1,6 @@
 <?php
 /**
- * This be a simple mailer class who be sending email!
+ * Uusiks meni. Swiftmailer in place.
  * 
  * @author Rajanigandha Balasubramanium
  *   
@@ -8,28 +8,25 @@
 class Mailer
 {
 	
-	/**
-	 * Mail from
-	 * 
-	 * @var string
-	 */
-	private $_from;
-	
-	private $_to;
-	
-	private $_subject;
-	
 	private $_message;
 	
 	
 	public function __construct($from, $to, $subject, $message)
 	{
 		// We construct mail from params.
-		
-		$this->_from = $from;
+                $swiftmsg = Swift_Message::newInstance();
+                
+		/*$this->_from = $from;
 		$this->_to = $to;
 		$this->_subject = $subject;
-		$this->_message = $message;		
+		$this->_message = $message;*/
+                
+                $swiftmsg->setSubject($subject);
+                $swiftmsg->setFrom($from);
+                $swiftmsg->setTo($to);
+                $swiftmsg->setBody($message);
+                
+                $this->_message = $swiftmsg;
 		
 	}
 	
@@ -42,9 +39,17 @@ class Mailer
 	 */
 	public function send()
 	{
-		$headers = "From: {$this->_from}";
+		/*$headers = "From: {$this->_from}";
 		$params = array();
-		return mail($this->_to, $this->_subject, $this->_message, $headers, null);
+		return mail($this->_to, $this->_subject, $this->_message, $headers, null);*/
+            
+            $transport = Swift_SmtpTransport::newInstance('localhost', '25');
+            $transport->setUsername('root');
+            $transport->setPassword('root');
+            
+            $mailer = Swift_Mailer::newInstance($transport);
+            
+            $mailer->send($this->_message);
 	}	
 	
 

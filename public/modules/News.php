@@ -1,5 +1,8 @@
 <?php
 /**
+ * CHANGELOKIIIIII:
+ * - Kommenttien käyttäjäsyötteestä poistettu läjä potentiaalisesti haitallisia erikoismerkkejä.
+ * 
  * News module be about dem news showings.
  * 
  * @author Lalitchandra Pakalomattam
@@ -116,7 +119,13 @@ class Module_News extends Module
 		$sql = "INSERT INTO news_comments (news_id, comment, created) VALUES(?, ?, ?)";
 		$stmt = $this->kobros->db->prepare($sql);
 		
-		$stmt->execute(array($item->id, $_POST['comment'], $now));
+                $kommentti = $_POST['comment'];
+                $kommentti = str_ireplace('<', '', $kommentti);
+                $kommentti = str_ireplace('>', '', $kommentti);
+                $kommentti = str_ireplace('\'', '', $kommentti);
+                $kommentti = str_ireplace('#', '', $kommentti);
+                
+                $stmt->execute(array($item->id, $kommentti, $now));
 
 		
 		

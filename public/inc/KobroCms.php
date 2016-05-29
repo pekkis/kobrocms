@@ -1,5 +1,10 @@
 <?php
 /**
+ * CHANGELOKI:
+ * - config.ini'n siirto web-scopen ulkopuolelle asetettu toimivalla tavalla parametreihin jotka sitä lukevat. 
+ * - $tpl filtteri paranneltu, ei pysty enään injektaamaan ....// tms.
+ * - $tpl errorviesti ei anna PHP tietoja enään. Palauttaa ylimmän (index.php'n) Exceptionin (eli "virhesivun").
+ * 
  * This be the main KobroCRM klass.
  * 
  * @author Devadutt Chattopadhyay
@@ -48,7 +53,7 @@ class KobroCms
 	private function __construct()
 	{
 		// We parse customers config.
-		$this->config = $config = parse_ini_file(ROOT . "/config.ini");
+		$this->config = $config = parse_ini_file(ROOT . "/../config.ini");
 				
 		// We connect to database
 		$this->db = new PDO("mysql:host={$this->config['db_host']};dbname={$this->config['db_schema']}", $this->config['db_user'], $this->config['db_password']);
@@ -149,12 +154,29 @@ class KobroCms
 		}
 		
 		// User can not go outside webroot so we fix the tpl param not to has goto up directory
-		$tpl = str_ireplace('../', '', $tpl);
+                //FIXED >:) EI-TAHRO-REGEXIÄ - purkkaviritykset4ever \o/
+		$tpl = str_ireplace('.', '', $tpl);
+                $tpl = str_ireplace('/', '', $tpl);
+                $tpl = str_ireplace('\\', '', $tpl);
+                //HIHIH ^,^ lisähämmennystä rikkojille... ei taida suorituskykyä kuiteskaan lannistaa.
+                //Regexillä ei vissiin aasialaiset tiedostonimet toimisi... :[
+                //Ellei siellä jtn "unicode #..sta #..een" funktiota. :x
+                $tpl = str_ireplace(';', '', $tpl);
+                $tpl = str_ireplace(',', '', $tpl);
+                $tpl = str_ireplace('&', '', $tpl);
+                $tpl = str_ireplace('#', '', $tpl);
+                $tpl = str_ireplace('@', '', $tpl);
+                $tpl = str_ireplace('!', '', $tpl);
+                $tpl = str_ireplace('"', '', $tpl);
 		
-		// We render outer template, inject inner teplate to it
-		return $this->view->render(ROOT . '/templates/outer/' . $tpl . '.phtml');
+		//We render outer template, inject inner teplate to it
+                if(is_readable(ROOT . '/templates/outer/' . $tpl . '.phtml')) {
+                   		return $this->view->render(ROOT . '/templates/outer/' . $tpl . '.phtml'); 
+                                }
+                //else, jos ei returnannut jo pois. :#
+                throw new Exception("Template not found.");
 				
-		// All is good.
+		// All (is good.) your forms are belong to Dr.Kobro.
 		
 	}
 
