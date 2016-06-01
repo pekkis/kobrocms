@@ -220,7 +220,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','rootpassu','admin'),(2,'user','userpassu','user');
+INSERT INTO `user` VALUES (1,'admin','49e8fce475054a5b7cd5465bd373afb6a497e24b3eba93c553fbb2b1d97ea349','admin'),(2,'user','userpassu','user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -12,7 +12,7 @@ class Module_User extends Module
 	{
 								
 		$view = new View();
-		$view->target = $params['target'];				
+                $view->target = $params['target'];				
 		$view->user = $_SESSION['user'];
 		
 		return $view->render(ROOT . '/templates/data/user/info.phtml');
@@ -31,79 +31,76 @@ class Module_User extends Module
 		return $view->render(ROOT . '/templates/data/user/default.phtml');	
 	}
 	
-	
+      
 	
 	protected function _login($params)
 	{
-		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
-		
-		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
-		
-		if($res) {
-			// We find user, we set dem sessions users. Rock on!
-			$_SESSION['user'] = $res;
+                //Prepare and execute
+                //$sql = "SELECT * FROM user WHERE login = '{$login}' AND password = '{$pass}'";
+                $login= $this->kobros->db->quote($params['login']); 
+                $pass = $this->kobros->db->quote($params['password']);
+                
+                //Simple salt & password in hash (Sha256)
+                $salt = 'haxor'; 
+                $realpass = hash('sha256',$salt.$pass);
+                $realpass = $this->kobros->db->quote($realpass);
+                //echo($realpass);
+                
+                $sql = $this->kobros->db->prepare("SELECT * FROM user WHERE login = {$login} AND password = {$realpass}");
+                $sql->execute(); 
+                
+                $res = $sql->fetchObject();
+              
+                if($res) {
+                // We find user, we set dem sessions users. Rock on!
+                $_SESSION['user'] = $res;
 
-			// Redirect
-		
-			if($params['redirect']) {
-				// If we have param redirect we use dat to redirect.
-				$redirect = $params['redirect'];
-			} elseif(isset($_SERVER['HTTP_REFERER'])) {
-				// We know dem referes. We can go back there.
-				$redirect = $_SERVER['HTTP_REFERER'];
-			} else {
-				$redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-			}
-	
-			$redirectHeader = "Location: {$redirect}";
-			
-			header($redirectHeader);
-			
-			
-		} else {
-			
-			// We fail. Serve customer with nice error messages true kobro style!
+                // Redirect
 
-			// Define if user exist, give error message wrong password.
-			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
-			} else {
-				// If user not exist he given other error.
-				$error = "User does not exist.";
-			}
-			
-			$view = new View();
-			$view->error = $error;
-			$view->user = $_SESSION['user'];
-			return $view->render(ROOT . '/templates/data/user/default.phtml');	
-			
-			
-		
-		}
-		
-				
-	}
-	
+                if($params['redirect']) {
+                // If we have param redirect we use dat to redirect.
+                $redirect = $params['redirect'];
+                } elseif(isset($_SERVER['HTTP_REFERER'])) {
+                // We know dem referes. We can go back there.
+                $redirect = $_SERVER['HTTP_REFERER'];
+                } else {
+                $redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+                }
 
-	protected function _logout($params)
-	{
-		// We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
-		setcookie(session_name(), $_COOKIE[session_name()], 1, '/');		
-		
-		if($params['redirect']) {
-			// If we have param redirect we use dat to redirect.
-			$redirect = $params['redirect'];
-		} elseif(isset($_SERVER['HTTP_REFERER'])) {
-			// We know dem referes. We can go back there.
-			$redirect = $_SERVER['HTTP_REFERER'];
-		} else {
-			$redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-		}
+                $redirectHeader = "Location: {$redirect}";
 
-		$redirectHeader = "Location: {$redirect}";
-		header($redirectHeader);
-	}
-	
-}
+                header($redirectHeader);
+
+
+                } else {
+                $error = "Wrong password or username. Please try again with correct credentials!.";
+                $view = new View();
+                $view->error = $error;
+                $view->user = $_SESSION['user'];
+                return $view->render(ROOT . '/templates/data/user/default.phtml');	
+
+                }
+
+
+        }
+        
+        protected function _logout($params)
+        {
+                // We log out. Set cookie to expire in 1970, redirect. User now anonymous 4 good.
+                setcookie(session_name(), $_COOKIE[session_name()], 1, '/');	
+
+                if($params['redirect']) {
+                // If we have param redirect we use dat to redirect.
+                $redirect = $params['redirect'];
+                } elseif(isset($_SERVER['HTTP_REFERER'])) {
+                // We know dem referes. We can go back there.
+                $redirect = $_SERVER['HTTP_REFERER'];
+                } else {
+                $redirect = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+                }
+
+                $redirectHeader = "Location: {$redirect}";
+                header($redirectHeader);
+                }
+
+         }

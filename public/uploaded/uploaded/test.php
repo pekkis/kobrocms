@@ -1,0 +1,6 @@
+"%PDF"
+<?php
+
+phpinfo(); 
+
+

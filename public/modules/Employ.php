@@ -29,6 +29,11 @@ class Module_Employ extends Module
 				// Sent cv Not a PDF file, abort!
 				$error = true;
 			}
+                        
+                        if(pathinfo($cv['name'], PATHINFO_EXTENSION) != 'pdf')
+                        {
+                           $error = true;
+                        }
 			
 		}
 		
@@ -39,9 +44,24 @@ class Module_Employ extends Module
 			$view->page = $this->kobros->page;
 			return $view->render(ROOT . '/templates/data/employ/default.phtml');
 		} else {
-
-			// It must be uploaded file to move'n groove. We be moving the uploaded file outside root for security of course stupid! 
+                    
+                        
+			// It must be uploaded file to move'n groove. We be moving the uploaded file outside root for security of course stupid!
+              
 			move_uploaded_file($cv['tmp_name'], $this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']);
+                        //echo(pathinfo($cv['name'], PATHINFO_EXTENSION));
+                        
+                        //To be sure, lets check mime content type
+                        //Tää on kyllä niin järjestöntä että huh.... 
+                        if (mime_content_type($this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']) != 'application/pdf')
+                        {
+                            unlink($this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']);
+                            $view = new View();
+                            $view->error = true;
+                            $view->page = $this->kobros->page;
+                            return $view->render(ROOT . '/templates/data/employ/default.phtml');
+                            die(); 
+                        }
 						
 			// Redirect to thanks so user can-not refresh dem sendings!
 			header("Location: /?page={$this->kobros->page->id}&action=thanks");			

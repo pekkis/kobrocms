@@ -44,35 +44,41 @@ class Module_Html extends Module
 	{
 		// Uh oh our application may not work like we mean.
 		// Well we fix later kludge for now so look better 4 customer than really are!
-		ob_get_clean();
-		
-		// If we want html from different page we get it
-		if(isset($params['page']) && $params['page']) {
-			$page = $this->kobros->getPage($params['page']);
-		} else {
-			// We not get it
-			$page = $this->kobros->page;
-		}
+                $obj = $_SESSION['user'];
+                 
+		if($obj->role == 'admin')
+                {
+                    ob_get_clean();
 
-		// We fetch all from da base.
-		$sql = "SELECT * FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
-		$q = $this->kobros->db->query($sql);
-		
-		
-		// We put view
-		$view = new View();		
-		$view->html = $q->fetch(PDO::FETCH_OBJ);
-		
-		// User is needed because he has maybe admin right
-		$view->user = $_SESSION['user'];
+                    // If we want html from different page we get it
+                    if(isset($params['page']) && $params['page']) {
+                            $page = $this->kobros->getPage($params['page']);
+                    } else {
+                            // We not get it
+                            $page = $this->kobros->page;
+                    }
 
-		
-		
-		return $view->render(ROOT . '/templates/data/html/edit.phtml');
-		
-		// die();
-	}
-	
+                    // We fetch all from da base.
+                    $sql = "SELECT * FROM html WHERE block_id = {$params['block_id']} AND page_id = {$page->id}";
+                    $q = $this->kobros->db->query($sql);
+
+
+                    // We put view
+                    $view = new View();		
+                    $view->html = $q->fetch(PDO::FETCH_OBJ);
+
+                    // User is needed because he has maybe admin right
+                    $view->user = $_SESSION['user'];
+
+
+
+                    return $view->render(ROOT . '/templates/data/html/edit.phtml');
+                    // die();
+                }
+                
+                //Palautellaan etusivulle jos ei ole oikeuksia
+                header('Location: /');
+        }
 	
 	/**
 	 *
@@ -83,6 +89,11 @@ class Module_Html extends Module
 	 */
 	public function _save($params)
 	{
+            
+                $obj = $_SESSION['user'];
+                 
+		if($obj->role == 'admin')
+                {
 		// We use prepared statement it be safe.
 		$sql = "UPDATE html SET content = ? WHERE page_id = ? AND block_id = ?";
 		$stmt = $this->kobros->db->prepare($sql);
@@ -91,6 +102,10 @@ class Module_Html extends Module
 		
 		// After savings we go back to previous.
 		header("Location: {$_SERVER['HTTP_REFERER']}");
+                }
+                else{
+                header('Location: /');
+                }
 		
 	}
 	
