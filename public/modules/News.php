@@ -15,14 +15,20 @@ class Module_News extends Module
 		
 		// Be private method so no can call from module! Safe!
 		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
-		$query = $this->kobros->db->query($sql);
+		$sql = $this->kobros->db->prepare('SELECT * FROM news WHERE page_id = ? ORDER BY created DESC LIMIT ?');
+                $sql->bindParam(1, $pageId, PDO::PARAM_INT);
+                $sql->bindParam(2, $limit , PDO::PARAM_INT);
+                $sql->execute();
+
+                //$sql = "SELECT * FROM news WHERE page_id = {$pageId} ORDER BY created DESC LIMIT {$limit}";
+		//$query = $this->kobros->db->query($sql);
 		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
+		//while($res = $query->fetch(PDO::FETCH_OBJ)) {
+                while($res = $sql->fetch(PDO::FETCH_OBJ)) {
 			$news[] = $res; 
+                        
 		}
-		
-		
+
 		return $news;
 
 	}
@@ -64,10 +70,16 @@ class Module_News extends Module
 		$pageId = (int) $params['page'];
 		$itemId = (int) $params['id'];
 		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->kobros->db->query($sql);
+                $sql = $this->kobros->db->prepare('SELECT * FROM news WHERE page_id = ? AND id = ?');
+                $sql->bindParam(1, $pageId, PDO::PARAM_INT);
+                $sql->bindParam(2, $itemId , PDO::PARAM_INT);
+                $sql->execute();
+                
+		//$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
+		//$query = $this->kobros->db->query($sql);
 		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
+		//while($res = $query->fetch(PDO::FETCH_OBJ)) {
+                while($res = $sql->fetch(PDO::FETCH_OBJ)) {
 			$news[] = $res; 
 		}
 		
@@ -79,8 +91,14 @@ class Module_News extends Module
 		$view->item = $news[0];
 		
 		$comments = array();
-		$query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
+                
+                $sql = $this->kobros->db->prepare('SELECT * FROM news_comments WHERE news_id = ? ORDER BY created DESC');
+                $sql->bindParam(1, $view->item->id, PDO::PARAM_INT);
+                $sql->execute();
+                
+		//$query = $this->kobros->db->query("SELECT * FROM news_comments WHERE news_id = {$view->item->id} ORDER BY created DESC");
+		//while($res = $query->fetch(PDO::FETCH_OBJ)) {
+                while($res = $sql->fetch(PDO::FETCH_OBJ)) {
 			$comments[] = $res;
 		}
 		
@@ -97,10 +115,16 @@ class Module_News extends Module
 		$pageId = (int) $params['page'];
 		$itemId = (int) $params['id'];
 		
-		$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
-		$query = $this->kobros->db->query($sql);
+                $sql = $this->kobros->db->prepare('SELECT * FROM news WHERE page_id = ? AND id = ?');
+                $sql->bindParam(1, $pageId, PDO::PARAM_INT);
+                $sql->bindParam(2, $itemId, PDO::PARAM_INT);
+                $sql->execute();
+                
+		//$sql = "SELECT * FROM news WHERE page_id = {$pageId} AND id = {$itemId}";
+		//$query = $this->kobros->db->query($sql);
 		$news = array();
-		while($res = $query->fetch(PDO::FETCH_OBJ)) {
+		//while($res = $query->fetch(PDO::FETCH_OBJ)) {
+                while($res = $sql->fetch(PDO::FETCH_OBJ)) {
 			$news[] = $res; 
 		}
 		

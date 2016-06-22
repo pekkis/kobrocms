@@ -35,10 +35,17 @@ class Module_User extends Module
 	
 	protected function _login($params)
 	{
-		
-		$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
-		
-		$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
+            
+                $pw = hash('sha512', $params['password'] . $params['login']);
+		$sql = $this->kobros->db->prepare('SELECT * FROM user WHERE login = ? AND password = ?');
+                
+                $sql->execute(array($params['login'], $pw));
+                
+                $res = $sql->fetch(PDO::FETCH_OBJ);
+                
+		//$sql = "SELECT * FROM user WHERE login = '{$params['login']}' AND password = '{$params['password']}'";
+
+		//$res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ);
 		
 		if($res) {
 			// We find user, we set dem sessions users. Rock on!
@@ -66,13 +73,13 @@ class Module_User extends Module
 			// We fail. Serve customer with nice error messages true kobro style!
 
 			// Define if user exist, give error message wrong password.
-			$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
-			if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
-				$error = "Invalid password.";
-			} else {
+			//$sql = "SELECT * FROM user WHERE login = '{$params['login']}'";
+			//if($res = $this->kobros->db->query($sql)->fetch(PDO::FETCH_OBJ)) {
+			//	$error = "Tunnuksesi tai salasanasi oli väärin";
+			//}
 				// If user not exist he given other error.
-				$error = "User does not exist.";
-			}
+                        $error = "Tunnuksesi tai salasanasi oli väärin";
+			
 			
 			$view = new View();
 			$view->error = $error;

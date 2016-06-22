@@ -81,13 +81,16 @@ class KobroCms
 	 */
 	public function getPage($pageId)
 	{
-		// We be casting dem page id to integer so the parameter always valid.
-		$pageId = (int) $pageId;
 		
-		$sql = "SELECT * FROM page WHERE id = {$pageId}";
-		return $this->db->query($sql)->fetch(PDO::FETCH_OBJ);
+		$pageId = (int) $pageId;
+		$sql = $this->db->prepare('SELECT * FROM page WHERE id = ?');
+                $sql->execute(array($pageId));
+                return $sql->fetch(PDO::FETCH_OBJ);
+                
+                //$sql = "SELECT * FROM page WHERE id = {$pageId}";
+		//return $this->db->query($sql)->fetch(PDO::FETCH_OBJ);
 	}
-	
+			
 	
 	/**
 	 * Executing a module command
