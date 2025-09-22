@@ -1,37 +1,41 @@
 <div class="post">
-<div class="entry">
+	<div class="entry">
 
-<h2>Site Search</h2>
+		<h2>Site Search</h2>
 
-<form id="searchform" method="get" action="/">
-			
-	<input type="hidden" name="page" value="<?php echo $this->page->id; ?>" />
-	<input type="hidden" name="action" value="search" />
+		<form id="searchform" method="get" action="/">
 
-		<input type="text" name="s" id="s" size="15" value="<?php echo $this->s; ?>" />
-		<input type="submit" value="Search" />
-		
-</form>
+			<input type="hidden" name="page" value="<?php echo $this->page->id; ?>" />
+			<input type="hidden" name="action" value="search" />
 
-<h2>Your Results</h2>
+			<input type="text" name="s" id="s" size="15" value="<?php echo $this->s; ?>" />
+			<input type="submit" value="Search" />
 
-<div id="searchresults">
+		</form>
 
-<div class="result">
-<h3><a href="#">Result</a></h3>
-<em>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis consequat egestas. Nullam commodo ante id diam mattis lacinia. Praesent tristique feugiat scelerisque. Vestibulum id metus nec velit sodales tincidunt non at velit.
-</em>
-</div>
+		<h2>Your Results</h2>
 
-<div class="result">
-<h3><a href="#">Result</a></h3>
-<em>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis consequat egestas. Nullam commodo ante id diam mattis lacinia. Praesent tristique feugiat scelerisque. Vestibulum id metus nec velit sodales tincidunt non at velit.
-</em>
-</div>
+		<div id="searchresults">
 
-</div>
+			<div class="result">
+				<h3><a href="#">Result</a></h3>
+				<em>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis consequat egestas. Nullam
+					commodo ante id diam mattis lacinia. Praesent tristique feugiat scelerisque. Vestibulum id metus nec
+					velit sodales tincidunt non at velit.
+				</em>
+			</div>
 
-</div>
+			<div class="result">
+				<h3><a href="#">Result</a></h3>
+				<em>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis consequat egestas. Nullam
+					commodo ante id diam mattis lacinia. Praesent tristique feugiat scelerisque. Vestibulum id metus nec
+					velit sodales tincidunt non at velit.
+				</em>
+			</div>
+
+		</div>
+
+	</div>
 </div>

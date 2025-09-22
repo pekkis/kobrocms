@@ -14,25 +14,25 @@ class Module_Employ extends Module
 		$view->page = $this->kobros->page;
 		$view->error = false;
 		return $view->render(ROOT . '/templates/data/employ/default.phtml');
-	}	
-	
-	
-	
+	}
+
+
+
 	protected function _send($params)
 	{
-		if(!isset($_FILES) || !$_FILES['cv']) {
+		if (!isset($_FILES) || !$_FILES['cv']) {
 			$error = true;
 		} else {
 			$cv = $_FILES['cv'];
-			
-			if($cv['type'] != 'application/pdf') {
+
+			if ($cv['type'] != 'application/pdf') {
 				// Sent cv Not a PDF file, abort!
 				$error = true;
 			}
-			
+
 		}
-		
-		if($error) {
+
+		if ($error) {
 			// We has error, render default wid error!
 			$view = new View();
 			$view->error = true;
@@ -42,21 +42,21 @@ class Module_Employ extends Module
 
 			// It must be uploaded file to move'n groove. We be moving the uploaded file outside root for security of course stupid! 
 			move_uploaded_file($cv['tmp_name'], $this->kobros->config['safe_data'] . '/uploaded/' . $cv['name']);
-						
+
 			// Redirect to thanks so user can-not refresh dem sendings!
-			header("Location: /?page={$this->kobros->page->id}&action=thanks");			
+			header("Location: /?page={$this->kobros->page->id}&action=thanks");
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 	protected function _thanks($params)
 	{
 		$view = new View();
 		return $view->render(ROOT . '/templates/data/employ/thanks.phtml');
 	}
-	
-	
-	
+
+
+
 }

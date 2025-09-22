@@ -1,0 +1,54 @@
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassu
+      MARIADB_DATABASE: kobrocms
+      MARIADB_USER: kobrouser
+      MARIADB_PASSWORD: kobropassu
+    ports:
+      - 3306:3306
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+      - ./docs/kobrocms.sql:/docker-entrypoint-initdb.d/kobrocms.sql
+    networks:
+      - njetwork
+
+  php-fpm:
+    build:
+      dockerfile: docker/php-fpm/Dockerfile
+    volumes:
+      - ./public:/var/www/html/public
+      #- ./wp-content/plugins:/var/www/html/public/wp-content/plugins
+      #- ./tmp/uploads:/var/www/html/public/wp-content/uploads
+      #- ./src/plugins/peksu-poksy:/var/www/html/public/wp-content/plugins/peksu-poksy
+      #- ./src/plugins/dubbels-image:/var/www/html/public/wp-content/plugins/dubbels-image
+      #- ./src/themes/peksu-poksy:/var/www/html/public/wp-content/themes/peksu-poksy
+      #- ./backups:/var/www/html/public/wp-content/wpvividbackups
+    networks:
+      - njetwork
+    extra_hosts:
+      - "kobrocms.tunk.io:host-gateway"
+
+  web:
+    image: nginx
+    volumes:
+      - ./public:/var/www/html/public
+      #- ./wp-content/plugins:/var/www/html/public/wp-content/plugins
+      #- ./tmp/uploads:/var/www/html/public/wp-content/uploads
+      - ./docs/nginx.conf:/etc/nginx/conf.d/default.conf
+      #- ./src/plugins/peksu-poksy:/var/www/html/public/wp-content/plugins/peksu-poksy
+      #- ./src/plugins/dubbels-image:/var/www/html/public/wp-content/plugins/dubbels-image
+      #- ./src/themes/peksu-poksy:/var/www/html/public/wp-content/themes/peksu-poksy
+      #- ./backups:/var/www/html/public/wp-content/wpvividbackups
+    ports:
+      - 80:80
+    networks:
+      - njetwork
+    extra_hosts:
+      - "kobrocms.tunk.io:host-gateway"
+
+networks:
+  njetwork:
+    driver: bridge
