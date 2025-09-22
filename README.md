@@ -1,12 +1,12 @@
-# KobroCMS 1.0.0
+# KobroCMS 1.1.0, revived in 2025
 
 ## Blast from the future
 
 Hey reader, this is Pekkis from the future (2025).
 
-When somebody advertised a gamified security training, based in OWASP top 10, and utilizing a very badly written app, I just **had to** revive KobroCMS.
+When somebody at our work advertised some internal gamified security training, based in OWASP top 10, and utilizing a very badly written app, I just **had to** revive KobroCMS to be runnable. Nostalgy is strong in me!
 
-Much of the material (all the deep documentation about the known security issues) has been lost to time. I'll try to find it from somewhere, but I am not hopeful.
+Much of the material (all the deep documentation about the known security issues) has been lost to time. I'll try to find that stuff from somewhere, but I am not hopeful.
 
 ## Credits
 

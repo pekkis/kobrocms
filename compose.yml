@@ -43,7 +43,7 @@ services:
       #- ./src/themes/peksu-poksy:/var/www/html/public/wp-content/themes/peksu-poksy
       #- ./backups:/var/www/html/public/wp-content/wpvividbackups
     ports:
-      - 80:80
+      - 8666:80
     networks:
       - njetwork
     extra_hosts:
